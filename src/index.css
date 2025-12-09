@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles for ChatGPT iframe integration */
+:root {
+  --color-primary: #10a37f;
+  --color-primary-hover: #0d8a6a;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Light mode (default) */
+body {
+  background-color: #ffffff;
+  color: #1a1a1a;
+}
+
+/* Dark mode */
+body.dark {
+  background-color: #343541;
+  color: #ececf1;
+}
+
+/* Ensure no scrollbars in inline mode */
+.widget-inline {
+  overflow: hidden;
+}
+
+/* Fullscreen mode styles */
+.widget-fullscreen {
+  min-height: 100vh;
+  overflow-y: auto;
+}
