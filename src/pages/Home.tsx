@@ -26,12 +26,16 @@ const CheckIcon = () => (
 
 export function Home() {
   const navigate = useNavigate();
-  const { toolOutput, isOpenAiAvailable } = useAppContext();
+  const { toolOutput, isLoading } = useAppContext();
 
   // Route based on tool output intent
+  // The intent can be at toolOutput.intent or toolOutput.structuredContent.intent
   React.useEffect(() => {
-    if (toolOutput?.intent) {
-      switch (toolOutput.intent) {
+    console.log('[Home] toolOutput received:', JSON.stringify(toolOutput, null, 2));
+    const intent = toolOutput?.intent || toolOutput?.structuredContent?.intent;
+    console.log('[Home] resolved intent:', intent);
+    if (intent) {
+      switch (intent) {
         case 'consultation':
           navigate('/consultation');
           break;
@@ -48,8 +52,8 @@ export function Home() {
     }
   }, [toolOutput, navigate]);
 
-  // Show loading while checking for tool output
-  if (!isOpenAiAvailable && !toolOutput) {
+  // Show loading while checking for OpenAI availability
+  if (isLoading) {
     return (
       <div className="p-4">
         <CardSkeleton />

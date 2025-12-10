@@ -7,8 +7,18 @@ export interface ToolInput {
   [key: string]: unknown;
 }
 
+export interface StructuredContent {
+  intent?: 'consultation' | 'msa_draft' | 'finalization' | 'payment';
+  status?: string;
+  user_id?: string;
+  message?: string;
+  [key: string]: unknown;
+}
+
 export interface ToolOutput {
   intent?: 'consultation' | 'msa_draft' | 'finalization' | 'payment';
+  content?: unknown[];
+  structuredContent?: StructuredContent;
   data?: unknown;
   [key: string]: unknown;
 }

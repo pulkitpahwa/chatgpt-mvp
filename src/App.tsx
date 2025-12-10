@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
 import { WidgetContainer } from './components/WidgetContainer';
 import { Home } from './pages/Home';
@@ -10,7 +10,7 @@ import { PaymentPage } from './pages/PaymentPage';
 function App() {
   return (
     <AppProvider>
-      <BrowserRouter>
+      <HashRouter>
         <WidgetContainer>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -20,7 +20,7 @@ function App() {
             <Route path="/payment" element={<PaymentPage />} />
           </Routes>
         </WidgetContainer>
-      </BrowserRouter>
+      </HashRouter>
     </AppProvider>
   );
 }
