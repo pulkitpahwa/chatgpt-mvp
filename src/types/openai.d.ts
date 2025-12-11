@@ -7,11 +7,19 @@ export interface ToolInput {
   [key: string]: unknown;
 }
 
+export interface UserInfo {
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  user_id?: string;
+}
+
 export interface StructuredContent {
   intent?: 'consultation' | 'msa_draft' | 'finalization' | 'payment';
   status?: string;
   user_id?: string;
   message?: string;
+  user?: UserInfo;
   [key: string]: unknown;
 }
 

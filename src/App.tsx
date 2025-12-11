@@ -7,6 +7,10 @@ import { MSADraftPage } from './pages/MSADraftPage';
 import { FinalizationPage } from './pages/FinalizationPage';
 import { PaymentPage } from './pages/PaymentPage';
 
+// Note: Authentication is handled by ChatGPT via OAuth flow with the MCP server.
+// When tools require authentication, ChatGPT prompts the user to sign in.
+// The widget receives authenticated user context through window.openai.toolOutput.
+
 function App() {
   return (
     <AppProvider>

@@ -4,6 +4,7 @@ import { useAppContext } from '../context/AppContext';
 import { Card, CardHeader, CardBody, CardFooter } from '../components/Card';
 import { Button } from '../components/Button';
 import { CardSkeleton } from '../components/Loading';
+import { UserInfo } from '../components/UserInfo';
 
 // Icons
 const ConsultIcon = () => (
@@ -64,6 +65,7 @@ export function Home() {
   // If no specific intent, show service selection
   return (
     <div className="p-4 space-y-4">
+
       <div className="text-center mb-6">
         <h1 className="text-xl font-bold text-text-primary-light dark:text-text-primary-dark">
           Inhouse Legal Services
@@ -72,6 +74,8 @@ export function Home() {
           Professional legal assistance for business and personal matters
         </p>
       </div>
+      {/* User info banner - shows if user is authenticated */}
+      <UserInfo />
 
       {/* Consultation Card */}
       <Card>

@@ -73,3 +73,11 @@ export function useWidgetState() {
 export function useLocale() {
   return useOpenAiGlobal('locale') ?? 'en-US';
 }
+
+/**
+ * Hook to get the authenticated user info from tool output
+ */
+export function useUserInfo() {
+  const toolOutput = useToolOutput();
+  return toolOutput?.structuredContent?.user ?? null;
+}
