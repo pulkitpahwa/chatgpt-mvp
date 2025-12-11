@@ -8,6 +8,7 @@ interface AppContextValue {
   toolOutput: ToolOutput | undefined;
   isOpenAiAvailable: boolean;
   isLoading: boolean;
+  isWaitingForBackend: boolean;
 }
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -16,19 +17,45 @@ interface AppProviderProps {
   children: ReactNode;
 }
 
+/**
+ * Check if toolOutput has meaningful data from the backend
+ */
+function hasBackendResponse(toolOutput: ToolOutput | undefined): boolean {
+  if (!toolOutput) return false;
+
+  // Check for intent at top level or in structuredContent
+  const hasIntent = !!(toolOutput.intent || toolOutput.structuredContent?.intent);
+
+  // Check for any structured content
+  const hasStructuredContent = !!(
+    toolOutput.structuredContent &&
+    Object.keys(toolOutput.structuredContent).length > 0
+  );
+
+  // Check for content array
+  const hasContent = !!(toolOutput.content && toolOutput.content.length > 0);
+
+  return hasIntent || hasStructuredContent || hasContent;
+}
+
 export function AppProvider({ children }: AppProviderProps) {
   const theme = useTheme();
   const displayMode = useDisplayMode();
   const toolOutput = useToolOutput();
   const [isOpenAiAvailable, setIsOpenAiAvailable] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [initialCheckComplete, setInitialCheckComplete] = useState(false);
+
+  // Determine loading states
+  // isLoading: true until we've done initial check for window.openai
+  // isWaitingForBackend: window.openai exists but toolOutput doesn't have backend data yet
+  const isLoading = !initialCheckComplete;
+  const isWaitingForBackend = isOpenAiAvailable && !hasBackendResponse(toolOutput);
 
   // Check if window.openai is available or set up mock for local testing
   useEffect(() => {
     const checkOpenAi = () => {
       if (window.openai) {
         setIsOpenAiAvailable(true);
-        setIsLoading(false);
         return true;
       }
       return false;
@@ -48,20 +75,34 @@ export function AppProvider({ children }: AppProviderProps) {
           status: 'selection',
           user_id: 'test_user',
           message: `Test mode: showing ${mockIntent} page`,
+          structuredContent: {
+            intent: mockIntent as 'consultation' | 'msa_draft' | 'finalization' | 'payment',
+            status: 'selection',
+            message: `Test mode: showing ${mockIntent} page`,
+          },
         },
       } as unknown as typeof window.openai;
       // Dispatch event so hooks pick up the change
       window.dispatchEvent(new Event('openai:set_globals'));
     }
 
-    if (checkOpenAi()) return;
+    if (checkOpenAi()) {
+      setInitialCheckComplete(true);
+      return;
+    }
 
     // Also listen for when it becomes available
-    const interval = setInterval(checkOpenAi, 100);
-    // After 2 seconds, stop loading even if openai isn't available (standalone mode)
+    const interval = setInterval(() => {
+      if (checkOpenAi()) {
+        clearInterval(interval);
+        setInitialCheckComplete(true);
+      }
+    }, 100);
+
+    // After 2 seconds, stop checking even if openai isn't available (standalone mode)
     const timeout = setTimeout(() => {
       clearInterval(interval);
-      setIsLoading(false);
+      setInitialCheckComplete(true);
     }, 2000);
 
     return () => {
@@ -95,6 +136,7 @@ export function AppProvider({ children }: AppProviderProps) {
     toolOutput,
     isOpenAiAvailable,
     isLoading,
+    isWaitingForBackend,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

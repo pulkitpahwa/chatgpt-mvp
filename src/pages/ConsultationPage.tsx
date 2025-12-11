@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardBody, CardFooter } from '../components/Card';
 import { Button } from '../components/Button';
+import { CardSkeleton } from '../components/Loading';
 import { StatusBanner } from '../components/WidgetContainer';
+import { useAppContext } from '../context/AppContext';
 import {
   useRequestConsultation,
   requestDisplayMode,
@@ -19,9 +21,19 @@ const ConsultIcon = () => (
 
 export function ConsultationPage() {
   const navigate = useNavigate();
+  const { isLoading, isWaitingForBackend } = useAppContext();
   const [consultationType, setConsultationType] = useState<ConsultationType | null>(null);
   const [success, setSuccess] = useState(false);
   const { loading, error, callTool } = useRequestConsultation();
+
+  // Show loading shimmer while waiting for backend response
+  if (isLoading || isWaitingForBackend) {
+    return (
+      <div className="p-4">
+        <CardSkeleton />
+      </div>
+    );
+  }
 
   const handleRequestConsultation = async () => {
     if (!consultationType) return;

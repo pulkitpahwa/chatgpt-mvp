@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardBody, CardFooter } from '../components/Card';
 import { Button } from '../components/Button';
 import { StatusBanner } from '../components/WidgetContainer';
-import { LoadingSpinner } from '../components/Loading';
+import { LoadingSpinner, CardSkeleton } from '../components/Loading';
 import {
   useDraftMSA,
   requestDisplayMode,
@@ -32,11 +32,20 @@ interface MSAData {
 
 export function MSADraftPage() {
   const navigate = useNavigate();
-  const { toolOutput } = useAppContext();
+  const { toolOutput, isLoading, isWaitingForBackend } = useAppContext();
   const [msaData, setMsaData] = useState<MSAData | null>(
     (toolOutput?.data as MSAData) || null
   );
   const { loading, error, callTool } = useDraftMSA();
+
+  // Show loading shimmer while waiting for backend response
+  if (isLoading || isWaitingForBackend) {
+    return (
+      <div className="p-4">
+        <CardSkeleton />
+      </div>
+    );
+  }
 
   const handleGenerateMSA = async () => {
     await requestDisplayMode('fullscreen');

@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardBody, CardFooter } from '../components/Card';
 import { Button } from '../components/Button';
+import { CardSkeleton } from '../components/Loading';
 import { StatusBanner } from '../components/WidgetContainer';
+import { useAppContext } from '../context/AppContext';
 import {
   useRequestFinalization,
   requestDisplayMode,
@@ -17,8 +19,18 @@ const CheckIcon = () => (
 
 export function FinalizationPage() {
   const navigate = useNavigate();
+  const { isLoading, isWaitingForBackend } = useAppContext();
   const [success, setSuccess] = useState(false);
   const { loading, error, callTool } = useRequestFinalization();
+
+  // Show loading shimmer while waiting for backend response
+  if (isLoading || isWaitingForBackend) {
+    return (
+      <div className="p-4">
+        <CardSkeleton />
+      </div>
+    );
+  }
 
   const handleRequestFinalization = async () => {
     await requestDisplayMode('fullscreen');

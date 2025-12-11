@@ -27,7 +27,7 @@ const CheckIcon = () => (
 
 export function Home() {
   const navigate = useNavigate();
-  const { toolOutput, isLoading } = useAppContext();
+  const { toolOutput, isLoading, isWaitingForBackend } = useAppContext();
 
   // Route based on tool output intent
   // The intent can be at toolOutput.intent or toolOutput.structuredContent.intent
@@ -53,10 +53,14 @@ export function Home() {
     }
   }, [toolOutput, navigate]);
 
-  // Show loading while checking for OpenAI availability
-  if (isLoading) {
+  // Show loading shimmer while:
+  // 1. Checking for OpenAI availability (isLoading)
+  // 2. Waiting for backend response (isWaitingForBackend)
+  if (isLoading || isWaitingForBackend) {
     return (
-      <div className="p-4">
+      <div className="p-4 space-y-4">
+        <CardSkeleton />
+        <CardSkeleton />
         <CardSkeleton />
       </div>
     );

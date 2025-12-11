@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Card, CardHeader, CardBody, CardFooter } from '../components/Card';
 import { Button } from '../components/Button';
-import { LoadingSpinner } from '../components/Loading';
+import { LoadingSpinner, CardSkeleton } from '../components/Loading';
+import { useAppContext } from '../context/AppContext';
 import {
   requestDisplayMode,
   setWidgetState,
@@ -20,8 +21,18 @@ type PaymentStatus = 'pending' | 'processing' | 'success' | 'error';
 export function PaymentPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { isLoading, isWaitingForBackend } = useAppContext();
   const [status, setStatus] = useState<PaymentStatus>('pending');
   const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
+
+  // Show loading shimmer while waiting for backend response
+  if (isLoading || isWaitingForBackend) {
+    return (
+      <div className="p-4">
+        <CardSkeleton />
+      </div>
+    );
+  }
 
   // Get payment URL from location state or tool output
   useEffect(() => {
