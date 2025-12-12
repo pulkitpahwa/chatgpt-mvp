@@ -1,28 +1,62 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAppContext } from '../context/AppContext';
-import { Card, CardHeader, CardBody, CardFooter } from '../components/Card';
-import { Button } from '../components/Button';
-import { CardSkeleton } from '../components/Loading';
-import { UserInfo } from '../components/UserInfo';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../context/AppContext";
+import { Card, CardBody } from "../components/Card";
+import { Button } from "../components/Button";
+import { TransitionScreen } from "../components/TransitionScreen";
+import INHOUSE_LOGO_URL from "../../public/inhouse.svg";
 
 // Icons
-const ConsultIcon = () => (
-  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+const BriefcaseIcon = () => (
+  <svg
+    className="w-5 h-5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+    />
+  </svg>
+);
+
+const InjuryIcon = () => (
+  <svg
+    className="w-5 h-5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+    />
   </svg>
 );
 
 const DocumentIcon = () => (
-  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+  <svg
+    className="w-5 h-5"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+    />
   </svg>
 );
 
-const CheckIcon = () => (
-  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-  </svg>
+const InhouseIcon = () => (
+  <img src={INHOUSE_LOGO_URL} alt="Inhouse Logo" className="w-64" />
 );
 
 export function Home() {
@@ -30,112 +64,89 @@ export function Home() {
   const { toolOutput, isLoading, isWaitingForBackend } = useAppContext();
 
   // Route based on tool output intent
-  // The intent can be at toolOutput.intent or toolOutput.structuredContent.intent
   React.useEffect(() => {
-    console.log('[Home] toolOutput received:', JSON.stringify(toolOutput, null, 2));
     const intent = toolOutput?.intent || toolOutput?.structuredContent?.intent;
-    console.log('[Home] resolved intent:', intent);
     if (intent) {
       switch (intent) {
-        case 'consultation':
-          navigate('/consultation');
+        case "consultation":
+        case "business_consultation":
+          navigate("/consultation");
           break;
-        case 'msa_draft':
-          navigate('/msa');
+        case "personal_injury":
+          navigate("/personal-injury");
           break;
-        case 'finalization':
-          navigate('/finalization');
+        case "msa_draft":
+          navigate("/msa");
           break;
-        case 'payment':
-          navigate('/payment');
+        case "finalization":
+          navigate("/finalization");
+          break;
+        case "payment":
+          navigate("/payment");
           break;
       }
     }
   }, [toolOutput, navigate]);
 
-  // Show loading shimmer while:
-  // 1. Checking for OpenAI availability (isLoading)
-  // 2. Waiting for backend response (isWaitingForBackend)
+  // Show loading state
   if (isLoading || isWaitingForBackend) {
     return (
-      <div className="p-4 space-y-4">
-        <CardSkeleton />
-        <CardSkeleton />
-        <CardSkeleton />
+      <div className="p-4">
+        <TransitionScreen message="Connecting to Legal Assistant..." />
       </div>
     );
   }
 
-  // If no specific intent, show service selection
+  // Service selection menu
   return (
-    <div className="p-4 space-y-4">
-
-      <div className="text-center mb-6">
-        <h1 className="text-xl font-bold text-text-primary-light dark:text-text-primary-dark">
-          Inhouse Legal Services
-        </h1>
-        <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark mt-1">
-          Professional legal assistance for business and personal matters
-        </p>
-      </div>
-      {/* User info banner - shows if user is authenticated */}
-      <UserInfo />
-
-      {/* Consultation Card */}
+    <div className="p-4">
       <Card>
-        <CardHeader
-          icon={<ConsultIcon />}
-          title="Consult an Attorney"
-          subtitle="Business law & personal injury specialists"
-        />
-        <CardBody>
-          <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
-            Connect with experienced attorneys who can provide expert guidance on your legal matters.
-          </p>
-        </CardBody>
-        <CardFooter>
-          <Button onClick={() => navigate('/consultation')} fullWidth>
-            Start Consultation
-          </Button>
-        </CardFooter>
-      </Card>
+        <CardBody className="flex flex-col md:flex-row">
+          {/* Header */}
+          <div className="text-center w-[100%] md:w-[30%] align-middle items-center flex">
+            <div className="flex justify-center items-center mb-3 w-full">
+              <InhouseIcon />
+            </div>
+          </div>
 
-      {/* MSA Draft Card */}
-      <Card>
-        <CardHeader
-          icon={<DocumentIcon />}
-          title="Draft MSA"
-          subtitle="Master Service Agreement generation"
-        />
-        <CardBody>
-          <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
-            Generate a professionally structured Master Service Agreement tailored to your needs.
-          </p>
-        </CardBody>
-        <CardFooter>
-          <Button onClick={() => navigate('/msa')} fullWidth>
-            Generate MSA
-          </Button>
-        </CardFooter>
-      </Card>
+          {/* Service selection buttons */}
+          <div className="space-y-3 mt-4 w-[100%] md:w-[70%]">
+            <p className="text-sm text-text-secondary-light text-center dark:text-text-secondary-dark mt-2">
+              I can help you with legal queries. Choose an option:
+            </p>
+            <div className="flex flex-col md:flex-row gap-3">
+              <Button
+                variant="outline"
+                fullWidth
+                onClick={() => navigate("/consultation")}
+                className="justify-start gap-3 py-6"
+              >
+                <BriefcaseIcon />
+                <span>Business Consultation</span>
+              </Button>
 
-      {/* Finalization Card */}
-      <Card>
-        <CardHeader
-          icon={<CheckIcon />}
-          title="Document Finalization"
-          subtitle="Make your documents legally enforceable"
-        />
-        <CardBody>
-          <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
-            Have a lawyer review and finalize your documents to ensure they're legally binding.
-          </p>
+              <Button
+                variant="outline"
+                fullWidth
+                onClick={() => navigate("/personal-injury")}
+                className="justify-start gap-3 py-6"
+              >
+                <InjuryIcon />
+                <span>Personal Injury Claim</span>
+              </Button>
+
+              <Button
+                variant="outline"
+                fullWidth
+                onClick={() => navigate("/finalization")}
+                className="justify-start gap-3 py-6"
+              >
+                <DocumentIcon />
+                <span>Finalize Draft</span>
+              </Button>
+            </div>
+          </div>
         </CardBody>
-        <CardFooter>
-          <Button onClick={() => navigate('/finalization')} fullWidth>
-            Finalize Document
-          </Button>
-        </CardFooter>
       </Card>
     </div>
   );

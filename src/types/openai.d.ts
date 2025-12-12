@@ -15,7 +15,7 @@ export interface UserInfo {
 }
 
 export interface StructuredContent {
-  intent?: 'consultation' | 'msa_draft' | 'finalization' | 'payment';
+  intent?: 'consultation' | 'business_consultation' | 'personal_injury' | 'msa_draft' | 'finalization' | 'payment';
   status?: string;
   user_id?: string;
   message?: string;
@@ -24,7 +24,7 @@ export interface StructuredContent {
 }
 
 export interface ToolOutput {
-  intent?: 'consultation' | 'msa_draft' | 'finalization' | 'payment';
+  intent?: 'consultation' | 'business_consultation' | 'personal_injury' | 'msa_draft' | 'finalization' | 'payment';
   content?: unknown[];
   structuredContent?: StructuredContent;
   data?: unknown;

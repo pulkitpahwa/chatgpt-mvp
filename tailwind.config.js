@@ -22,8 +22,8 @@ export default {
       colors: {
         // ChatGPT-compatible color tokens
         primary: {
-          DEFAULT: '#10a37f',
-          hover: '#0d8a6a',
+          DEFAULT: '#1b2b48',
+          hover: '#2a3c5f',
         },
         surface: {
           light: '#ffffff',

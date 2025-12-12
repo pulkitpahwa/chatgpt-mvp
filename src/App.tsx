@@ -3,6 +3,7 @@ import { AppProvider } from './context/AppContext';
 import { WidgetContainer } from './components/WidgetContainer';
 import { Home } from './pages/Home';
 import { ConsultationPage } from './pages/ConsultationPage';
+import { PersonalInjuryPage } from './pages/PersonalInjuryPage';
 import { MSADraftPage } from './pages/MSADraftPage';
 import { FinalizationPage } from './pages/FinalizationPage';
 import { PaymentPage } from './pages/PaymentPage';
@@ -19,6 +20,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/consultation" element={<ConsultationPage />} />
+            <Route path="/personal-injury" element={<PersonalInjuryPage />} />
             <Route path="/msa" element={<MSADraftPage />} />
             <Route path="/finalization" element={<FinalizationPage />} />
             <Route path="/payment" element={<PaymentPage />} />
