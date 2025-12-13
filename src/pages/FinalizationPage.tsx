@@ -162,15 +162,13 @@ export function FinalizationPage() {
       return;
     }
 
-    const args = isLoggedIn
-      ? {}
-      : {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          document_type: formData.documentType,
-          notes: formData.notes || undefined,
-        };
+    const args = {
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      document_type: formData.documentType,
+      notes: formData.notes || undefined,
+    };
 
     const result = await callTool(args);
 

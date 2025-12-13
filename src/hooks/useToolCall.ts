@@ -68,7 +68,7 @@ export interface ConsultationResponse {
 
 export function useRequestConsultation() {
   return useToolCall<ConsultationResponse>(
-    'request_consultation_api_request_consultation_post'
+    'request_consultation'
   );
 }
 
@@ -81,7 +81,7 @@ export interface FinalizationResponse {
 
 export function useRequestFinalization() {
   return useToolCall<FinalizationResponse>(
-    'request_finalization_api_request_finalization_post'
+    'request_finalization'
   );
 }
 
@@ -96,7 +96,7 @@ export interface MSADraftResponse {
 }
 
 export function useDraftMSA() {
-  return useToolCall<MSADraftResponse>('draft_msa_api_draft_msa_post');
+  return useToolCall<MSADraftResponse>('request_finalization');
 }
 
 /**
