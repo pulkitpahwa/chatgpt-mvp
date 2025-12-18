@@ -43,6 +43,20 @@ export default {
           light: '#e5e5e5',
           dark: '#4e4f60',
         },
+        // Morgan & Morgan brand colors
+        morgan: {
+          gold: '#FDEB0E',
+          blue: '#1a365d',
+        },
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-in-out',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(4px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
       },
     },
   },
