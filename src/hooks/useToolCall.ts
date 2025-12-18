@@ -60,15 +60,20 @@ export function useToolCall<T = unknown>(
 // Typed hooks for specific MCP tools
 
 export interface ConsultationResponse {
-  success: boolean;
-  requestId?: string;
-  message?: string;
-  paymentUrl?: string;
+  content?: Array<{ type: string; text: string }>;
+  structuredContent?: {
+    intent: string;
+    status: string;
+    message: string;
+    requestId?: string;
+    paymentUrl?: string;
+  };
+  _meta?: Record<string, unknown>;
 }
 
 export function useRequestConsultation() {
   return useToolCall<ConsultationResponse>(
-    'request_consultation'
+    'store_lead'
   );
 }
 

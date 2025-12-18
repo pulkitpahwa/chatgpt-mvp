@@ -68,18 +68,33 @@ export function PersonalInjuryPage() {
 
     const result = await callTool(args);
 
-    if (result?.success) {
+    // Check for successful response using structuredContent
+    const isSuccess = result?.structuredContent?.status === "complete";
+
+    if (isSuccess) {
       setSuccess(true);
       setShowMatchedScreen(false);
+
+      // Extract requestId from structuredContent or parse from message
+      const requestId = result.structuredContent?.requestId ||
+        extractRequestIdFromMessage(result.structuredContent?.message);
+
       setWidgetState({
         consultationRequested: true,
-        requestId: result.requestId,
+        requestId,
         partnerFirm: "morgan_morgan",
       });
 
       // Switch to inline mode for success view
       requestDisplayMode("inline");
     }
+  };
+
+  // Helper to extract UUID from message if requestId not provided directly
+  const extractRequestIdFromMessage = (message?: string): string | undefined => {
+    if (!message) return undefined;
+    const uuidMatch = message.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i);
+    return uuidMatch?.[0];
   };
 
   // Success state
