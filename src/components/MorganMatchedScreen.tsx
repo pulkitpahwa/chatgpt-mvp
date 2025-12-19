@@ -1,39 +1,11 @@
 import { useState } from "react";
-import { Card, CardBody } from "./Card";
-import { Button } from "./Button";
-import { FormInput, FormTextarea } from "./form";
-import { StatusBanner } from "./WidgetContainer";
+import { Button } from "@openai/apps-sdk-ui/components/Button";
+import { Input } from "@openai/apps-sdk-ui/components/Input";
+import { Textarea } from "@openai/apps-sdk-ui/components/Textarea";
+import { Alert } from "@openai/apps-sdk-ui/components/Alert";
+import MMIntroImage from "../../public/mm-intro.png";
 
 // Icons
-const CheckmarkIcon = () => (
-  <svg
-    className="w-4 h-4 text-green-500 flex-shrink-0"
-    fill="currentColor"
-    viewBox="0 0 20 20"
-  >
-    <path
-      fillRule="evenodd"
-      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-      clipRule="evenodd"
-    />
-  </svg>
-);
-
-const ScaleIcon = () => (
-  <svg
-    className="h-48 text-primary"
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={1.5}
-      d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"
-    />
-  </svg>
-);
 
 const BackIcon = () => (
   <svg
@@ -107,53 +79,69 @@ export function MorganMatchedScreen({
   if (showForm) {
     return (
       <div className="p-4 max-h-[400px] overflow-y-auto">
-        <Card className="shadow-md flex-grow">
-          <CardBody>
-            {/* Back button and title */}
-            <div className="flex items-center gap-2 mb-4">
-              <button
-                onClick={() => setShowForm(false)}
-                className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                aria-label="Go back"
-              >
-                <BackIcon />
-              </button>
-              <h2 className="text-sm font-semibold text-text-primary-light dark:text-text-primary-dark">
-                Share your details
-              </h2>
-            </div>
+        <div className="bg-background-secondary rounded-xl p-6 shadow-sm">
+          {/* Back button and title */}
+          <div className="flex items-center gap-2 mb-4">
+            <button
+              onClick={() => setShowForm(false)}
+              className="p-1 rounded hover:bg-background-tertiary transition-colors"
+              aria-label="Go back"
+            >
+              <BackIcon />
+            </button>
+            <h2 className="text-sm font-semibold text-foreground-primary">
+              Share your details
+            </h2>
+          </div>
 
-            {/* Form - horizontal on desktop, vertical on mobile */}
-            <div className="space-y-3">
-              {/* Row 1: Full Name, Email */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <FormInput
-                  label="Full Name"
-                  required
+          {/* Form */}
+          <div className="space-y-3">
+            {/* Row 1: Full Name, Email */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-sm font-medium text-foreground-primary mb-1">
+                  Full Name <span className="text-red-500">*</span>
+                </label>
+                <Input
                   value={formData.name}
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
-                  error={formErrors.name}
+                  invalid={!!formErrors.name}
                   placeholder="Your full name"
                 />
+                {formErrors.name && (
+                  <p className="text-sm text-red-500 mt-1">{formErrors.name}</p>
+                )}
+              </div>
 
-                <FormInput
-                  label="Email Address"
+              <div>
+                <label className="block text-sm font-medium text-foreground-primary mb-1">
+                  Email Address <span className="text-red-500">*</span>
+                </label>
+                <Input
                   type="email"
-                  required
                   value={formData.email}
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
-                  error={formErrors.email}
+                  invalid={!!formErrors.email}
                   placeholder="your@email.com"
                 />
+                {formErrors.email && (
+                  <p className="text-sm text-red-500 mt-1">
+                    {formErrors.email}
+                  </p>
+                )}
               </div>
+            </div>
 
-              {/* Row 2: Additional details */}
-              <FormTextarea
-                label="Additional details (optional)"
+            {/* Row 2: Additional details */}
+            <div>
+              <label className="block text-sm font-medium text-foreground-primary mb-1">
+                Additional details (optional)
+              </label>
+              <Textarea
                 value={formData.notes}
                 onChange={(e) =>
                   setFormData({ ...formData, notes: e.target.value })
@@ -161,86 +149,100 @@ export function MorganMatchedScreen({
                 placeholder="Anything else you'd like the lawyer to know..."
                 rows={3}
               />
-
-              {/* Error banner */}
-              {error && (
-                <StatusBanner
-                  type="error"
-                  message={
-                    error.message || "Failed to submit. Please try again."
-                  }
-                />
-              )}
-
-              {/* Row 3: CTA */}
-              <Button onClick={handleSubmit} loading={loading} fullWidth>
-                Get Free Consultation
-              </Button>
-
-              <p className="text-xs text-text-secondary-light dark:text-text-secondary-dark text-center">
-                By submitting, you agree to be contacted about your case.
-              </p>
             </div>
-          </CardBody>
-        </Card>
+
+            {/* Error banner */}
+            {error && (
+              <Alert
+                color="danger"
+                title="Error"
+                description={
+                  error.message || "Failed to submit. Please try again."
+                }
+              />
+            )}
+
+            {/* Submit button */}
+            <Button
+              color="primary"
+              onClick={handleSubmit}
+              loading={loading}
+              block
+            >
+              Get Free Consultation
+            </Button>
+
+            <p className="text-xs text-foreground-tertiary text-center">
+              By submitting, you agree to be contacted about your case.
+            </p>
+          </div>
+        </div>
       </div>
     );
   }
 
   // Two-Card View (default)
   return (
-    <div className="flex p-4 md:h-[400px] max-h-[400px] overflow-y-auto ">
-      <div className="flex gap-3">
-        {/* Card 1: You've been matched */}
-        <Card className="shadow-md flex-grow">
-          <CardBody>
-            <div className="flex gap-3 flex-col">
-              <div className="flex justify-center h-[150px]">
-                <ScaleIcon />
-              </div>
-              <div className="flex flex-col py-8">
-                <h1 className="text-base font-bold text-text-primary-light dark:text-text-primary-dark">
-                  You've been matched with Morgan & Morgan
-                </h1>
-                <p className="text-center text-xs text-text-secondary-light dark:text-text-secondary-dark">
-                  America's largest personal injury law firm
-                </p>
-              </div>
+    <div className="flex p-4 md:h-[400px] max-h-screen overflow-y-auto">
+      <div className="flex gap-3 w-full flex-col shadow ">
+        {/* Card 1: No longer being used. this is discarded after the new designs were presented. th
+        this will now come as message from the backend. */}
+        {/* <div className="bg-background-secondary rounded-xl p-6 shadow-lg flex-1 border-[0.5px] border-[#0D0D0D26]">
+          <div className="flex gap-3 flex-col h-full justify-center">
+            <div className="flex flex-col  py-4">
+              <h1 className="text-base text-foreground-primary">
+                <b>Inhouse</b> determined this issue is a strong fit and matched
+                you with <b>Morgan & Morgan</b>, the nation’s largest
+                plaintiff-side law firm.
+              </h1>
             </div>
-          </CardBody>
-        </Card>
+          </div>
+        </div> */}
 
         {/* Card 2: Benefits + CTA */}
-        <Card className="shadow-md flex-grow">
-          <CardBody className="flex flex-col my-auto gap-4 align-middle h-[90%]">
-            <div className="gap-2 my-auto  flex flex-col">
-              <div className="flex items-start gap-2">
-                <CheckmarkIcon />
-                <p className="text-sm text-text-primary-light dark:text-text-primary-dark">
-                  A local lawyer will call you within 24 hours
-                </p>
-              </div>
-
-              <div className="flex items-start gap-2">
-                <CheckmarkIcon />
-                <p className="text-sm text-text-primary-light dark:text-text-primary-dark">
-                  The lawyer will have this chat for context
-                </p>
-              </div>
-
-              <div className="flex items-start gap-2">
-                <CheckmarkIcon />
-                <p className="text-sm text-text-primary-light dark:text-text-primary-dark">
-                  If your case is accepted, you won't pay anything
-                </p>
-              </div>
+        <div className="bg-background-secondary rounded-xl p-6 shadow-lg flex-1 flex flex-col justify-center shadow-lg border-[0.5px] border-[#0D0D0D26]">
+          <img
+            src={MMIntroImage}
+            alt="Morgan & Morgan"
+            className="mb-4 rounded"
+          />
+          <div className="gap-3 flex flex-col mb-4">
+            <div className="flex items-start gap-2">
+              <p className="text-sm text-foreground-primary flex flex-col md:flex-row">
+                <span className="font-[700] text-[18px] leading-[160%] text-[#0D0D0D]">
+                  Morgan & Morgan{" "}
+                </span>
+                <span className="font-[400] text-[14px] leading-[20px] text-[#0D0D0D]">
+                  $25 Billion Recovered for Clients
+                </span>
+              </p>
             </div>
 
-            <Button onClick={() => setShowForm(true)} fullWidth>
-              Get Free Consultation
-            </Button>
-          </CardBody>
-        </Card>
+            <div className="flex items-start gap-2">
+              <ul className="text-[#5D5D5D] text-[14px] leading-[20px] list-disc ml-5">
+                <li>
+                  Share your details and a local lawyer will call you within 24
+                  hours{" "}
+                </li>
+                <li>If your case is accepted, you won’t pay</li>
+              </ul>
+            </div>
+          </div>
+          <Button
+            color="primary"
+            onClick={() => setShowForm(true)}
+            block
+            className="text-white rounded-lg px-4 py-2"
+          >
+            Consult Now, It’s Free!
+          </Button>
+          <p
+            onClick={() => setShowForm(true)}
+            className="font-[590] text-center px-4 mt-4 py-2 text-[14px] text-[#5D5D5D] leading-[20px]"
+          >
+            Have more questions?
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { LoadingSpinner } from "./Loading";
+import { LoadingDots } from "@openai/apps-sdk-ui/components/Indicator";
 import INHOUSE_LOGO_URL from "../../public/inhouse.svg";
 
 interface TransitionScreenProps {
@@ -17,7 +17,7 @@ const DEFAULT_ROTATING_MESSAGES = [
 export function TransitionScreen({
   message,
   rotatingMessages = DEFAULT_ROTATING_MESSAGES,
-  intervalMs = 5000, // 15 seconds per message (45s total for 3 messages)
+  intervalMs = 2000,
 }: TransitionScreenProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -40,11 +40,14 @@ export function TransitionScreen({
   const displayMessage = message || rotatingMessages[currentIndex];
 
   return (
-    <div className="flex flex-col items-center justify-center p-8 md:h-[400px] min-h-[200px] bg-[#F7F7F8] dark:bg-surface-dark rounded-lg gap-8">
+    <div className="flex flex-col items-center justify-center p-8 md:h-[400px] min-h-[200px] bg-background-secondary rounded-lg gap-6">
       <img src={INHOUSE_LOGO_URL} alt="Inhouse Logo" className="w-64 my-4" />
-      <LoadingSpinner size="md" />
-      <p className="mt-4 text-sm text-text-secondary-light dark:text-text-secondary-dark animate-fade-in">
-        {displayMessage}...
+
+      <p className="text-foreground-secondary animate-fade-in flex flex-row gap-4">
+        <span>{displayMessage}</span>
+        <sub className="">
+          <LoadingDots />
+        </sub>
       </p>
     </div>
   );

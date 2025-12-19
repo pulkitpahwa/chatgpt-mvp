@@ -1,10 +1,11 @@
 import { useState, useCallback } from 'react';
+import type { ToolCallResult, DisplayMode, WidgetState } from '../types/openai';
 
 interface UseToolCallResult<T> {
-  data: T | null;
+  data: ToolCallResult<T> | null;
   loading: boolean;
   error: Error | null;
-  callTool: (args?: Record<string, unknown>) => Promise<T | null>;
+  callTool: (args?: Record<string, unknown>) => Promise<ToolCallResult<T> | null>;
   reset: () => void;
 }
 
@@ -17,12 +18,12 @@ interface UseToolCallResult<T> {
 export function useToolCall<T = unknown>(
   toolName: string
 ): UseToolCallResult<T> {
-  const [data, setData] = useState<T | null>(null);
+  const [data, setData] = useState<ToolCallResult<T> | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
   const callTool = useCallback(
-    async (args?: Record<string, unknown>): Promise<T | null> => {
+    async (args?: Record<string, unknown>): Promise<ToolCallResult<T> | null> => {
       if (!window.openai?.callTool) {
         const err = new Error('window.openai.callTool is not available');
         setError(err);
@@ -33,7 +34,7 @@ export function useToolCall<T = unknown>(
       setError(null);
 
       try {
-        const result = (await window.openai.callTool(toolName, args)) as T;
+        const result = await window.openai.callTool<T>(toolName, args);
         setData(result);
         return result;
       } catch (err) {
@@ -59,25 +60,19 @@ export function useToolCall<T = unknown>(
 
 // Typed hooks for specific MCP tools
 
-export interface ConsultationResponse {
-  content?: Array<{ type: string; text: string }>;
-  structuredContent?: {
-    intent: string;
-    status: string;
-    message: string;
-    requestId?: string;
-    paymentUrl?: string;
-  };
-  _meta?: Record<string, unknown>;
+export interface ConsultationStructuredContent {
+  intent: string;
+  status: string;
+  message: string;
+  requestId?: string;
+  paymentUrl?: string;
 }
 
 export function useRequestConsultation() {
-  return useToolCall<ConsultationResponse>(
-    'store_lead'
-  );
+  return useToolCall<ConsultationStructuredContent>('store_lead');
 }
 
-export interface FinalizationResponse {
+export interface FinalizationStructuredContent {
   success: boolean;
   requestId?: string;
   message?: string;
@@ -85,30 +80,14 @@ export interface FinalizationResponse {
 }
 
 export function useRequestFinalization() {
-  return useToolCall<FinalizationResponse>(
-    'request_finalization'
-  );
-}
-
-export interface MSADraftResponse {
-  success: boolean;
-  chatId?: string;
-  googleDocId?: string;
-  draftContent?: string;
-  warnings?: string[];
-  paymentUrl?: string;
-  isLocked?: boolean;
-}
-
-export function useDraftMSA() {
-  return useToolCall<MSADraftResponse>('request_finalization');
+  return useToolCall<FinalizationStructuredContent>('request_finalization');
 }
 
 /**
- * Helper to request display mode change
+ * Request display mode change
  */
 export async function requestDisplayMode(
-  mode: 'inline' | 'fullscreen' | 'pip'
+  mode: DisplayMode
 ): Promise<boolean> {
   if (!window.openai?.requestDisplayMode) {
     console.warn('window.openai.requestDisplayMode is not available');
@@ -118,9 +97,9 @@ export async function requestDisplayMode(
 }
 
 /**
- * Helper to update widget state
+ * Update widget state (persisted across renders)
  */
-export function setWidgetState(state: Record<string, unknown>): void {
+export function setWidgetState(state: WidgetState): void {
   if (!window.openai?.setWidgetState) {
     console.warn('window.openai.setWidgetState is not available');
     return;
@@ -129,7 +108,7 @@ export function setWidgetState(state: Record<string, unknown>): void {
 }
 
 /**
- * Helper to send a follow-up message to ChatGPT
+ * Send a follow-up message to ChatGPT
  */
 export async function sendFollowUpMessage(prompt: string): Promise<void> {
   if (!window.openai?.sendFollowUpMessage) {
@@ -140,7 +119,7 @@ export async function sendFollowUpMessage(prompt: string): Promise<void> {
 }
 
 /**
- * Helper to close the widget
+ * Close the widget
  */
 export function requestClose(): void {
   if (!window.openai?.requestClose) {
@@ -151,7 +130,7 @@ export function requestClose(): void {
 }
 
 /**
- * Helper to open external URL
+ * Open external URL
  */
 export function openExternal(href: string): void {
   if (!window.openai?.openExternal) {
@@ -160,4 +139,28 @@ export function openExternal(href: string): void {
     return;
   }
   window.openai.openExternal({ href });
+}
+
+/**
+ * Upload a file and get its ID
+ */
+export async function uploadFile(file: File): Promise<string | null> {
+  if (!window.openai?.uploadFile) {
+    console.warn('window.openai.uploadFile is not available');
+    return null;
+  }
+  const result = await window.openai.uploadFile(file);
+  return result.fileId;
+}
+
+/**
+ * Get a temporary download URL for a file
+ */
+export async function getFileDownloadUrl(fileId: string): Promise<string | null> {
+  if (!window.openai?.getFileDownloadUrl) {
+    console.warn('window.openai.getFileDownloadUrl is not available');
+    return null;
+  }
+  const result = await window.openai.getFileDownloadUrl({ fileId });
+  return result.url;
 }

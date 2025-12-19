@@ -1,35 +1,27 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind 4 + Apps SDK UI styles */
+@import "tailwindcss";
+@import "@openai/apps-sdk-ui/css";
 
-/* Base styles for ChatGPT iframe integration */
-:root {
-  --color-primary: #10a37f;
-  --color-primary-hover: #0d8a6a;
+/* Custom theme extensions */
+@theme {
+  /* Morgan & Morgan brand colors */
+  --color-morgan-gold: #FDEB0E;
+  --color-morgan-blue: #1a365d;
+
+  /* Custom animations */
+  --animate-fade-in: fadeIn 0.5s ease-in-out;
 }
 
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Base styles for ChatGPT iframe integration */
 html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Light mode (default) */
-body {
-  background-color: #ffffff;
-  color: #1a1a1a;
-}
-
-/* Dark mode */
-body.dark {
-  background-color: #343541;
-  color: #ececf1;
 }
 
 /* Ensure no scrollbars in inline mode */

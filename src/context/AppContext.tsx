@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { useTheme, useDisplayMode, useToolOutput } from '../hooks/useOpenAiGlobal';
+import { useTheme, useDisplayMode, useToolOutput, useIsOpenAiAvailable } from '../hooks/useOpenAiGlobal';
 import type { DisplayMode, Theme, ToolOutput } from '../types/openai';
 
 interface AppContextValue {
@@ -42,82 +42,63 @@ export function AppProvider({ children }: AppProviderProps) {
   const theme = useTheme();
   const displayMode = useDisplayMode();
   const toolOutput = useToolOutput();
-  const [isOpenAiAvailable, setIsOpenAiAvailable] = useState(false);
+  const isOpenAiAvailable = useIsOpenAiAvailable();
   const [initialCheckComplete, setInitialCheckComplete] = useState(false);
 
   // Determine loading states
-  // isLoading: true until we've done initial check for window.openai
-  // isWaitingForBackend: window.openai exists but toolOutput doesn't have backend data yet
   const isLoading = !initialCheckComplete;
   const isWaitingForBackend = isOpenAiAvailable && !hasBackendResponse(toolOutput);
 
-  // Check if window.openai is available or set up mock for local testing
+  // Check for window.openai availability or set up mock for local testing
   useEffect(() => {
-    const checkOpenAi = () => {
-      if (window.openai) {
-        setIsOpenAiAvailable(true);
-        return true;
-      }
-      return false;
-    };
-
     // Check for mock_intent in URL (for local testing)
     const urlParams = new URLSearchParams(window.location.search);
     const mockIntent = urlParams.get('mock_intent');
+
     if (mockIntent && !window.openai) {
       console.log('[AppContext] Setting up mock window.openai with intent:', mockIntent);
       window.openai = {
         theme: 'light',
         locale: 'en-US',
         displayMode: 'inline',
+        userAgent: '',
+        maxHeight: 600,
+        safeArea: { top: 0, right: 0, bottom: 0, left: 0 },
+        toolInput: {},
+        toolResponseMetadata: {},
+        widgetState: {},
         toolOutput: {
-          intent: mockIntent as 'consultation' | 'msa_draft' | 'finalization' | 'payment',
-          status: 'selection',
-          user_id: 'test_user',
-          message: `Test mode: showing ${mockIntent} page`,
+          intent: mockIntent as 'consultation' | 'personal_injury',
           structuredContent: {
-            intent: mockIntent as 'consultation' | 'msa_draft' | 'finalization' | 'payment',
+            intent: mockIntent as 'consultation' | 'personal_injury',
             status: 'selection',
             message: `Test mode: showing ${mockIntent} page`,
           },
         },
-      } as unknown as typeof window.openai;
+        callTool: async () => ({ content: [], structuredContent: undefined }),
+        sendFollowUpMessage: async () => {},
+        requestDisplayMode: async () => true,
+        setWidgetState: () => {},
+        requestClose: () => {},
+        openExternal: () => {},
+        uploadFile: async () => ({ fileId: 'mock-file-id' }),
+        getFileDownloadUrl: async () => ({ url: '', expiresAt: '' }),
+      };
       // Dispatch event so hooks pick up the change
       window.dispatchEvent(new Event('openai:set_globals'));
     }
 
-    if (checkOpenAi()) {
-      setInitialCheckComplete(true);
-      return;
-    }
-
-    // Also listen for when it becomes available
-    const interval = setInterval(() => {
-      if (checkOpenAi()) {
-        clearInterval(interval);
-        setInitialCheckComplete(true);
-      }
-    }, 100);
-
-    // After 2 seconds, stop checking even if openai isn't available (standalone mode)
+    // Complete initial check after a short delay
     const timeout = setTimeout(() => {
-      clearInterval(interval);
       setInitialCheckComplete(true);
-    }, 2000);
+    }, window.openai ? 0 : 2000);
 
-    return () => {
-      clearInterval(interval);
-      clearTimeout(timeout);
-    };
+    return () => clearTimeout(timeout);
   }, []);
 
-  // Apply theme to document
+  // Apply theme to document for dark mode
   useEffect(() => {
-    if (theme === 'dark') {
-      document.body.classList.add('dark');
-    } else {
-      document.body.classList.remove('dark');
-    }
+    document.documentElement.classList.toggle('dark', theme === 'dark');
   }, [theme]);
 
   // Apply display mode class

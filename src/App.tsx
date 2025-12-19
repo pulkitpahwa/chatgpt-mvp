@@ -1,4 +1,6 @@
 import { HashRouter, Routes, Route } from 'react-router-dom';
+import { AppsSDKUIProvider } from '@openai/apps-sdk-ui/components/AppsSDKUIProvider';
+import { Link } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
 import { WidgetContainer } from './components/WidgetContainer';
 import { Home } from './pages/Home';
@@ -13,16 +15,18 @@ import { PersonalInjuryPage } from './pages/PersonalInjuryPage';
 
 function App() {
   return (
-    <AppProvider>
-      <HashRouter>
-        <WidgetContainer>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/personal-injury" element={<PersonalInjuryPage />} />
-          </Routes>
-        </WidgetContainer>
-      </HashRouter>
-    </AppProvider>
+    <HashRouter>
+      <AppsSDKUIProvider linkComponent={Link}>
+        <AppProvider>
+          <WidgetContainer>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/personal-injury" element={<PersonalInjuryPage />} />
+            </Routes>
+          </WidgetContainer>
+        </AppProvider>
+      </AppsSDKUIProvider>
+    </HashRouter>
   );
 }
 
