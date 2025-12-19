@@ -40,7 +40,7 @@ export function TransitionScreen({
   const displayMessage = message || rotatingMessages[currentIndex];
 
   return (
-    <div className="flex flex-col items-center justify-center p-8 md:h-[400px] min-h-[200px] bg-background-secondary rounded-lg gap-6">
+    <div className="flex flex-col items-center justify-center p-8 md:h-[480px] min-h-[200px] bg-background-secondary rounded-lg gap-6">
       <img src={INHOUSE_LOGO_URL} alt="Inhouse Logo" className="w-64 my-4" />
 
       <p className="text-foreground-secondary animate-fade-in flex flex-row gap-4">

@@ -67,9 +67,12 @@ export function PersonalInjuryPage() {
     };
 
     const result = await callTool(args);
+    console.log("Morgan & Morgan consultation request result:");
+    console.log(JSON.stringify(result, null, 2));
 
     // Check for successful response using structuredContent
     const isSuccess = result?.structuredContent?.status === "complete";
+    alert(isSuccess);
 
     if (isSuccess) {
       setSuccess(true);
@@ -77,6 +80,7 @@ export function PersonalInjuryPage() {
 
       // Extract requestId from structuredContent
       const requestId = result.structuredContent?.requestId;
+      alert(`success:true, showmatchedscreen: false, requestId: ${requestId}`);
 
       setWidgetState({
         consultationRequested: true,
@@ -92,7 +96,7 @@ export function PersonalInjuryPage() {
   // Success state
   if (success) {
     return (
-      <div className="p-4 max-h-[400px] overflow-y-auto">
+      <div className="p-4 max-h-[480px] overflow-y-auto">
         <div className="bg-background-secondary rounded-xl p-6 shadow-sm">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
@@ -108,7 +112,11 @@ export function PersonalInjuryPage() {
             </div>
           </div>
 
-          <Alert color="success" className="mb-4" description="Your information has been sent to Morgan & Morgan. A local lawyer will reach out within 24 hours." />
+          <Alert
+            color="success"
+            className="mb-4"
+            description="Your information has been sent to Morgan & Morgan. A local lawyer will reach out within 24 hours."
+          />
 
           <div className="p-4 bg-background-tertiary rounded-lg mb-4">
             <h3 className="font-medium text-foreground-primary mb-3">
@@ -117,15 +125,21 @@ export function PersonalInjuryPage() {
             <ul className="text-sm text-foreground-secondary space-y-2">
               <li className="flex items-start gap-2">
                 <span className="text-green-500 font-medium shrink-0">1.</span>
-                <span>A lawyer from Morgan & Morgan reviews your chat and details</span>
+                <span>
+                  A lawyer from Morgan & Morgan reviews your chat and details
+                </span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 font-medium shrink-0">2.</span>
-                <span>They'll call you within 24 hours to discuss your case</span>
+                <span>
+                  They'll call you within 24 hours to discuss your case
+                </span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 font-medium shrink-0">3.</span>
-                <span>If they accept your case, you pay nothing unless you win</span>
+                <span>
+                  If they accept your case, you pay nothing unless you win
+                </span>
               </li>
             </ul>
           </div>

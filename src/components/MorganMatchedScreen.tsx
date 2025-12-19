@@ -4,6 +4,16 @@ import { Input } from "@openai/apps-sdk-ui/components/Input";
 import { Textarea } from "@openai/apps-sdk-ui/components/Textarea";
 import { Alert } from "@openai/apps-sdk-ui/components/Alert";
 import MMIntroImage from "../../public/mm-intro.png";
+import { MorganFaqSection } from "./MorganFaqSection";
+
+// Extend Window interface for webplus
+declare global {
+  interface Window {
+    webplus?: {
+      requestDisplayMode?: (options: { mode: string }) => void;
+    };
+  }
+}
 
 // Icons
 
@@ -52,6 +62,34 @@ export function MorganMatchedScreen({
     notes: "",
   });
   const [formErrors, setFormErrors] = useState<FormErrors>({});
+  const [showFaq, setShowFaq] = useState(false);
+
+  const changeFormShowStatus = (status: boolean) => {
+    setShowForm(status);
+    window.scrollTo(0, 0);
+    setShowFaq(false);
+    if (status) {
+      if (window?.webplus?.requestDisplayMode) {
+        window.webplus.requestDisplayMode({ mode: "fullscreen" });
+      }
+    } else {
+      document.exitFullscreen?.();
+    }
+  };
+
+  const changeFaqShowStatus = (status: boolean) => {
+    setShowFaq(status);
+    if (!status) {
+      window.scrollTo(0, 0);
+    } else {
+      setTimeout(() => {
+        const scrollTarget = document.getElementById("morgan-matched-faq");
+        if (scrollTarget) {
+          scrollTarget.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+      }, 100);
+    }
+  };
 
   const validateForm = (): boolean => {
     const errors: FormErrors = {};
@@ -78,8 +116,8 @@ export function MorganMatchedScreen({
   // Form View
   if (showForm) {
     return (
-      <div className="p-4 max-h-[400px] overflow-y-auto">
-        <div className="bg-background-secondary rounded-xl p-6 shadow-sm">
+      <div className="p-4 max-h-[480px] overflow-y-auto">
+        <div className="bg-background-secondary rounded-xl shadow-sm">
           {/* Back button and title */}
           <div className="flex items-center gap-2 mb-4">
             <button
@@ -104,6 +142,7 @@ export function MorganMatchedScreen({
                 </label>
                 <Input
                   value={formData.name}
+                  className="h-[48px] px-[16px]"
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
@@ -120,6 +159,7 @@ export function MorganMatchedScreen({
                   Email Address <span className="text-red-500">*</span>
                 </label>
                 <Input
+                  className="h-[48px] px-[16px]"
                   type="email"
                   value={formData.email}
                   onChange={(e) =>
@@ -143,11 +183,12 @@ export function MorganMatchedScreen({
               </label>
               <Textarea
                 value={formData.notes}
+                className="py-[12px] px-[16px]"
                 onChange={(e) =>
                   setFormData({ ...formData, notes: e.target.value })
                 }
                 placeholder="Anything else you'd like the lawyer to know..."
-                rows={3}
+                rows={2}
               />
             </div>
 
@@ -168,8 +209,9 @@ export function MorganMatchedScreen({
               onClick={handleSubmit}
               loading={loading}
               block
+              className={`text-white rounded-lg  py-2 w-[100%] px-4`}
             >
-              Get Free Consultation
+              Start your claim{" "}
             </Button>
 
             <p className="text-xs text-foreground-tertiary text-center">
@@ -183,7 +225,7 @@ export function MorganMatchedScreen({
 
   // Two-Card View (default)
   return (
-    <div className="flex p-4 md:h-[400px] max-h-screen overflow-y-auto">
+    <div className="flex p-4 md:h-[480px] xs:h-[480px] max-h-[480px] overflow-y-auto max-w-">
       <div className="flex gap-3 w-full flex-col shadow ">
         {/* Card 1: No longer being used. this is discarded after the new designs were presented. th
         this will now come as message from the backend. */}
@@ -204,7 +246,7 @@ export function MorganMatchedScreen({
           <img
             src={MMIntroImage}
             alt="Morgan & Morgan"
-            className="mb-4 rounded"
+            className="mb-4 rounded h-[180px] object-cover object-top"
           />
           <div className="gap-3 flex flex-col mb-4">
             <div className="flex items-start gap-2">
@@ -212,7 +254,7 @@ export function MorganMatchedScreen({
                 <span className="font-[700] text-[18px] leading-[160%] text-[#0D0D0D]">
                   Morgan & Morgan{" "}
                 </span>
-                <span className="font-[400] text-[14px] leading-[20px] text-[#0D0D0D]">
+                <span className="md:px-2 font-[400] text-[14px] leading-[20px] text-[#0D0D0D] items-center flex md:pt-1">
                   $25 Billion Recovered for Clients
                 </span>
               </p>
@@ -228,20 +270,31 @@ export function MorganMatchedScreen({
               </ul>
             </div>
           </div>
-          <Button
-            color="primary"
-            onClick={() => setShowForm(true)}
-            block
-            className="text-white rounded-lg px-4 py-2"
-          >
-            Consult Now, It’s Free!
-          </Button>
-          <p
-            onClick={() => setShowForm(true)}
-            className="font-[590] text-center px-4 mt-4 py-2 text-[14px] text-[#5D5D5D] leading-[20px]"
-          >
-            Have more questions?
-          </p>
+          <div className="flex flex-col md:flex-row gap-4">
+            <Button
+              color="primary"
+              onClick={() => {
+                changeFormShowStatus(true);
+              }}
+              id="show-form-button"
+              className={`text-white rounded-lg  py-2  md:w-[50%] text-[14px] ${
+                showFaq ? "w-[60%] text-[12px] px-8" : "w-[100%] px-4"
+              }`}
+            >
+              Consult Now, It’s Free!
+            </Button>
+            {!showFaq && (
+              <p
+                onClick={() => {
+                  changeFaqShowStatus(true);
+                }}
+                className="font-[590] text-center text-[14px] text-[#5D5D5D] leading-[20px] w-[100%] md:w-[50%] border rounded-lg  py-2  "
+              >
+                Have more questions?
+              </p>
+            )}
+          </div>
+          {showFaq && <MorganFaqSection />}
         </div>
       </div>
     </div>
