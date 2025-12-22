@@ -5,13 +5,17 @@ import { AppProvider } from './context/AppContext';
 import { WidgetContainer } from './components/WidgetContainer';
 import { Home } from './pages/Home';
 import { PersonalInjuryPage } from './pages/PersonalInjuryPage';
+import { BusinessConsultationPage } from './pages/BusinessConsultationPage';
+import { NotAvailablePage } from './pages/NotAvailablePage';
 
 // Note: Authentication is handled by ChatGPT via OAuth flow with the MCP server.
 // When tools require authentication, ChatGPT prompts the user to sign in.
 // The widget receives authenticated user context through window.openai.toolOutput.
 
-// This app is focused exclusively on personal injury lead collection
-// in partnership with Morgan & Morgan.
+// This app provides legal consultation matching for:
+// - Personal Injury (Morgan & Morgan)
+// - Business Consultation
+// - Other legal areas (not currently available)
 
 function App() {
   return (
@@ -22,6 +26,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/personal-injury" element={<PersonalInjuryPage />} />
+              <Route path="/business-consultation" element={<BusinessConsultationPage />} />
+              <Route path="/not-available" element={<NotAvailablePage />} />
             </Routes>
           </WidgetContainer>
         </AppProvider>

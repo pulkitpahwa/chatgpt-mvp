@@ -14,8 +14,6 @@ declare global {
   }
 }
 
-// Icons
-
 const BackIcon = () => (
   <svg
     className="w-4 h-4"
@@ -45,17 +43,17 @@ interface FormErrors {
   phone?: string;
 }
 
-interface MorganMatchedScreenProps {
+interface BusinessMatchedScreenProps {
   onSubmit: (data: FormData & { phone: string }) => Promise<void>;
   loading?: boolean;
   error?: Error | null;
 }
 
-export function MorganMatchedScreen({
+export function BusinessMatchedScreen({
   onSubmit,
   loading = false,
   error = null,
-}: MorganMatchedScreenProps) {
+}: BusinessMatchedScreenProps) {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -95,13 +93,13 @@ export function MorganMatchedScreen({
 
   const handleSubmit = async () => {
     if (!validateForm()) return;
-    await onSubmit(formData);
+    await onSubmit({ ...formData, phone: formData.phone || "" });
   };
 
   // Form View
   if (showForm) {
     return (
-      <div className="max-h-[480px] overflow-y-auto">
+      <div className="p-4 max-h-[480px] overflow-y-auto">
         <div className="bg-background-secondary rounded-xl shadow-sm">
           {/* Back button and title */}
           <div className="flex items-center gap-2 mb-4">
@@ -113,14 +111,14 @@ export function MorganMatchedScreen({
               <BackIcon />
             </button>
             <h2 className="text-sm font-semibold text-foreground-primary">
-              Share your details
+              Share your business details
             </h2>
           </div>
 
           {/* Form */}
           <div className="space-y-3">
-            {/* Row 1: Full Name, Email */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {/* Row 1: Full Name, Phone */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div>
                 <label className="block text-sm font-medium text-foreground-primary mb-1">
                   Full Name <span className="text-red-500">*</span>
@@ -183,7 +181,7 @@ export function MorganMatchedScreen({
             {/* Row 2: Additional details */}
             <div>
               <label className="block text-sm font-medium text-foreground-primary mb-1">
-                Additional context (optional)
+                Business details (optional)
               </label>
               <Textarea
                 value={formData.notes}
@@ -191,7 +189,7 @@ export function MorganMatchedScreen({
                 onChange={(e) =>
                   setFormData({ ...formData, notes: e.target.value })
                 }
-                placeholder="Case details which aren't in your chat"
+                placeholder="Describe your business legal needs"
                 rows={2}
               />
             </div>
@@ -213,13 +211,14 @@ export function MorganMatchedScreen({
               onClick={handleSubmit}
               loading={loading}
               block
-              className={`text-white rounded-lg  py-2 w-[100%] px-4`}
+              className={`text-white rounded-lg py-2 w-[100%] px-4`}
             >
-              Send to lawyer{" "}
+              Send to lawyer
             </Button>
 
             <p className="text-xs text-foreground-tertiary text-center">
-              By submitting, you agree to be contacted about your case.
+              By submitting, you agree to be contacted about your business
+              matter.
             </p>
           </div>
         </div>
@@ -227,54 +226,44 @@ export function MorganMatchedScreen({
     );
   }
 
-  // Two-Card View (default)
+  // Initial Card View
   return (
-    <div className="flex md:h-[480px] xs:h-[480px] max-h-[480px] overflow-y-auto max-w-">
-      <div className="flex gap-3 w-full flex-col shadow ">
-        {/* Card 1: No longer being used. this is discarded after the new designs were presented. th
-        this will now come as message from the backend. */}
-        {/* <div className="bg-background-secondary rounded-xl p-6 shadow-lg flex-1 border-[0.5px] border-[#0D0D0D26]">
-          <div className="flex gap-3 flex-col h-full justify-center">
-            <div className="flex flex-col  py-4">
-              <h1 className="text-base text-foreground-primary">
-                <b>Inhouse</b> determined this issue is a strong fit and matched
-                you with <b>Morgan & Morgan</b>, the nation’s largest
-                plaintiff-side law firm.
-              </h1>
-            </div>
-          </div>
-        </div> */}
-
-        {/* Card 2: Benefits + CTA */}
-        <div className="bg-background-secondary rounded-xl p-6 shadow-lg flex-1 flex flex-col justify-center shadow-lg border-[0.5px] border-[#0D0D0D26]">
+    <div className="flex p-4 md:h-[480px] xs:h-[480px] max-h-[480px] overflow-y-auto">
+      <div className="flex gap-3 w-full flex-col shadow">
+        {/* Card: Benefits + CTA for Business */}
+        <div className="bg-background-secondary rounded-xl shadow-lg flex-1 flex flex-col justify-center border-[0.5px] border-[#0D0D0D26]">
           <img
             src={MMIntroImage}
             alt="Morgan & Morgan"
-            className="mb-4 rounded h-[180px] object-cover object-top"
+            className="mb-4 rounded h-[160px] object-cover object-top"
           />
-          <div className="gap-3 flex flex-col mb-4">
-            <div className="flex items-start gap-2">
-              <p className="text-sm text-foreground-primary flex flex-col md:flex-row">
-                <span className="font-[700] text-[18px] leading-[160%] text-[#0D0D0D]">
-                  Connect to Morgan & Morgan{" "}
+          <div className="gap-3 flex flex-col mb-4 px-4">
+            <div className="flex items-start">
+              <p className=" text-foreground-primary flex flex-col md:flex-row">
+                <span className="font-[700] text-[16px] leading-[140%] text-[#0D0D0D]">
+                  Business Legal Consultation
                 </span>
                 <span className="md:px-2 font-[400] text-[14px] leading-[20px] text-[#0D0D0D] items-center flex md:pt-1">
-                  $30 Billion Recovered for Clients
+                  Expert Business Law Support
                 </span>
               </p>
             </div>
 
-            <div className="flex items-start gap-2">
-              <ul className="text-[#5D5D5D] text-[14px] leading-[20px] list-disc ml-5 flex flex-col gap-2">
+            <div className="flex items-start gap-1">
+              <ul className="text-[#5D5D5D] text-[14px] leading-[20px] list-disc ml-4 flex flex-col gap-1">
                 <li>
-                  Share this chat with an experienced local lawyer for free
-                  consultation{" "}
+                  Connect with an experienced business law attorney for
+                  consultation
                 </li>
-                <li>Pay nothing if your case is accepted</li>
+                <li>
+                  Contract disputes, corporate matters, and commercial
+                  litigation
+                </li>
+                <li>Get expert guidance on your business legal needs</li>
               </ul>
             </div>
           </div>
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-col md:flex-row gap-4 px-4">
             <Button
               color="primary"
               onClick={() => {
@@ -283,20 +272,9 @@ export function MorganMatchedScreen({
               id="show-form-button"
               className="text-white rounded-lg py-2 w-[100%] px-4 text-[14px]"
             >
-              Consult Now, It’s Free!
+              Get Business Consultation
             </Button>
-            {/* {!showFaq && (
-              <p
-                onClick={() => {
-                  changeFaqShowStatus(true);
-                }}
-                className="font-[590] text-center text-[14px] text-[#5D5D5D] leading-[20px] w-[100%] md:w-[50%] border rounded-lg  py-2  "
-              >
-                Have more questions?
-              </p>
-            )} */}
           </div>
-          {/* {showFaq && <MorganFaqSection />} */}
         </div>
       </div>
     </div>
