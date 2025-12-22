@@ -68,6 +68,7 @@ export interface ConsultationStructuredContent {
   paymentUrl?: string;
 }
 
+
 export function useRequestConsultation() {
   return useToolCall<ConsultationStructuredContent>('store_lead');
 }

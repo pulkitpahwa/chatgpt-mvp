@@ -37,11 +37,13 @@ interface FormData {
   name: string;
   email: string;
   notes: string;
+  phone: string;
 }
 
 interface FormErrors {
   name?: string;
   email?: string;
+  phone?: string;
 }
 
 interface MorganMatchedScreenProps {
@@ -153,10 +155,29 @@ export function MorganMatchedScreen({
                   <p className="text-sm text-red-500 mt-1">{formErrors.name}</p>
                 )}
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-foreground-primary mb-1">
-                  Email Address <span className="text-red-500">*</span>
+                  Phone Number <span className="text-red-500">*</span>
+                </label>
+                <Input
+                  className="h-[48px] px-[16px]"
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) =>
+                    setFormData({ ...formData, phone: e.target.value })
+                  }
+                  invalid={!!formErrors.phone}
+                  placeholder="Enter your phone"
+                />
+                {formErrors.phone && (
+                  <p className="text-sm text-red-500 mt-1">
+                    {formErrors.phone}
+                  </p>
+                )}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-foreground-primary mb-1">
+                  Email Address
                 </label>
                 <Input
                   className="h-[48px] px-[16px]"
@@ -179,7 +200,7 @@ export function MorganMatchedScreen({
             {/* Row 2: Additional details */}
             <div>
               <label className="block text-sm font-medium text-foreground-primary mb-1">
-                Additional details (optional)
+                Additional context (optional)
               </label>
               <Textarea
                 value={formData.notes}
@@ -187,7 +208,7 @@ export function MorganMatchedScreen({
                 onChange={(e) =>
                   setFormData({ ...formData, notes: e.target.value })
                 }
-                placeholder="Anything else you'd like the lawyer to know..."
+                placeholder="Case details which aren't in your chat"
                 rows={2}
               />
             </div>
@@ -211,7 +232,7 @@ export function MorganMatchedScreen({
               block
               className={`text-white rounded-lg  py-2 w-[100%] px-4`}
             >
-              Start your claim{" "}
+              Send to lawyer{" "}
             </Button>
 
             <p className="text-xs text-foreground-tertiary text-center">
@@ -252,21 +273,21 @@ export function MorganMatchedScreen({
             <div className="flex items-start gap-2">
               <p className="text-sm text-foreground-primary flex flex-col md:flex-row">
                 <span className="font-[700] text-[18px] leading-[160%] text-[#0D0D0D]">
-                  Morgan & Morgan{" "}
+                  Connect to Morgan & Morgan{" "}
                 </span>
                 <span className="md:px-2 font-[400] text-[14px] leading-[20px] text-[#0D0D0D] items-center flex md:pt-1">
-                  $25 Billion Recovered for Clients
+                  $30 Billion Recovered for Clients
                 </span>
               </p>
             </div>
 
             <div className="flex items-start gap-2">
-              <ul className="text-[#5D5D5D] text-[14px] leading-[20px] list-disc ml-5">
+              <ul className="text-[#5D5D5D] text-[14px] leading-[20px] list-disc ml-5 flex flex-col gap-2">
                 <li>
-                  Share your details and a local lawyer will call you within 24
-                  hours{" "}
+                  Share this chat with an experienced local lawyer for free
+                  consultation{" "}
                 </li>
-                <li>If your case is accepted, you won’t pay</li>
+                <li>Pay nothing if your case is accepted</li>
               </ul>
             </div>
           </div>
@@ -277,13 +298,13 @@ export function MorganMatchedScreen({
                 changeFormShowStatus(true);
               }}
               id="show-form-button"
-              className={`text-white rounded-lg  py-2  md:w-[50%] text-[14px] ${
+              className={`text-white rounded-lg  py-2  md:w-[100%] text-[14px] ${
                 showFaq ? "w-[60%] text-[12px] px-8" : "w-[100%] px-4"
               }`}
             >
               Consult Now, It’s Free!
             </Button>
-            {!showFaq && (
+            {/* {!showFaq && (
               <p
                 onClick={() => {
                   changeFaqShowStatus(true);
@@ -292,9 +313,9 @@ export function MorganMatchedScreen({
               >
                 Have more questions?
               </p>
-            )}
+            )} */}
           </div>
-          {showFaq && <MorganFaqSection />}
+          {/* {showFaq && <MorganFaqSection />} */}
         </div>
       </div>
     </div>
