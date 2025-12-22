@@ -3,7 +3,6 @@ import { Button } from "@openai/apps-sdk-ui/components/Button";
 import { Input } from "@openai/apps-sdk-ui/components/Input";
 import { Textarea } from "@openai/apps-sdk-ui/components/Textarea";
 import { Alert } from "@openai/apps-sdk-ui/components/Alert";
-import MMIntroImage from "../../public/mm-intro.png";
 
 // Extend Window interface for webplus
 declare global {
@@ -99,7 +98,7 @@ export function BusinessMatchedScreen({
   // Form View
   if (showForm) {
     return (
-      <div className="p-4 max-h-[480px] overflow-y-auto">
+      <div className="p-4 overflow-y-auto">
         <div className="bg-background-secondary rounded-xl shadow-sm">
           {/* Back button and title */}
           <div className="flex items-center gap-2 mb-4">
@@ -228,17 +227,12 @@ export function BusinessMatchedScreen({
 
   // Initial Card View
   return (
-    <div className="flex p-4 md:h-[480px] xs:h-[480px] max-h-[480px] overflow-y-auto">
-      <div className="flex gap-3 w-full flex-col shadow">
+    <div className="flex p-4 md:h-[480px] h-[480px]  overflow-y-auto">
+      <div className="flex gap-3 w-full flex-col shadow ">
         {/* Card: Benefits + CTA for Business */}
-        <div className="bg-background-secondary rounded-xl shadow-lg flex-1 flex flex-col justify-center border-[0.5px] border-[#0D0D0D26]">
-          <img
-            src={MMIntroImage}
-            alt="Morgan & Morgan"
-            className="mb-4 rounded h-[160px] object-cover object-top"
-          />
-          <div className="gap-3 flex flex-col mb-4 px-4">
-            <div className="flex items-start">
+        <div className="bg-background-secondary rounded-xl shadow-lg flex-1 flex flex-col justify-between border-[0.5px] border-[#0D0D0D26] py-6">
+          <div className="gap-4 flex flex-col mb-4 p-4">
+            <div className="flex items-start gap-4">
               <p className=" text-foreground-primary flex flex-col md:flex-row">
                 <span className="font-[700] text-[16px] leading-[140%] text-[#0D0D0D]">
                   Business Legal Consultation
@@ -250,7 +244,7 @@ export function BusinessMatchedScreen({
             </div>
 
             <div className="flex items-start gap-1">
-              <ul className="text-[#5D5D5D] text-[14px] leading-[20px] list-disc ml-4 flex flex-col gap-1">
+              <ul className="text-[#5D5D5D] text-[14px] leading-[20px] list-disc ml-4 flex flex-col gap-3">
                 <li>
                   Connect with an experienced business law attorney for
                   consultation
@@ -263,14 +257,14 @@ export function BusinessMatchedScreen({
               </ul>
             </div>
           </div>
-          <div className="flex flex-col md:flex-row gap-4 px-4">
+          <div className="flex flex-col md:flex-row gap-4 p-4">
             <Button
               color="primary"
               onClick={() => {
                 changeFormShowStatus(true);
               }}
               id="show-form-button"
-              className="text-white rounded-lg py-2 w-[100%] px-4 text-[14px]"
+              className="text-white rounded-lg py-[20px] w-[100%] px-4 text-[14px]"
             >
               Get Business Consultation
             </Button>
