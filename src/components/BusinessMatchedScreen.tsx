@@ -1,8 +1,14 @@
 import { useState } from "react";
-import { Button } from "@openai/apps-sdk-ui/components/Button";
 import { Input } from "@openai/apps-sdk-ui/components/Input";
 import { Textarea } from "@openai/apps-sdk-ui/components/Textarea";
 import { Alert } from "@openai/apps-sdk-ui/components/Alert";
+import {
+  ArrowRightIcon,
+  ArrowsMergeIcon,
+  CheckCircleIcon,
+  HandHeartIcon,
+  UserCircleCheckIcon,
+} from "@phosphor-icons/react";
 
 // Extend Window interface for webplus
 declare global {
@@ -36,6 +42,12 @@ interface FormData {
   phone: string;
 }
 
+interface MatchInfo {
+  who: string;
+  why: string;
+  nextSteps: string;
+}
+
 interface FormErrors {
   name?: string;
   email?: string;
@@ -46,12 +58,21 @@ interface BusinessMatchedScreenProps {
   onSubmit: (data: FormData & { phone: string }) => Promise<void>;
   loading?: boolean;
   error?: Error | null;
+  matchInfo?: MatchInfo;
 }
+
+const defaultMatchInfo: MatchInfo = {
+  who: "Inhouse Counsel, P.C. a national business law firm connected to over 2,000 subject matter experts in business law",
+  why: "You drafted a terms of service which is a commercial contract that they have significant experience in",
+  nextSteps:
+    "They will review your chat and Terms of Service draft and email you to coordinate a time for a video call. You'll pay $99 for 30 minutes of the lawyer's time.",
+};
 
 export function BusinessMatchedScreen({
   onSubmit,
   loading = false,
   error = null,
+  matchInfo = defaultMatchInfo,
 }: BusinessMatchedScreenProps) {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState<FormData>({
@@ -204,21 +225,43 @@ export function BusinessMatchedScreen({
               />
             )}
 
-            {/* Submit button */}
-            <Button
-              color="primary"
-              onClick={handleSubmit}
-              loading={loading}
-              block
-              className={`text-white rounded-lg py-2 w-[100%] px-4`}
-            >
-              Send to lawyer
-            </Button>
-
-            <p className="text-xs text-foreground-tertiary text-center">
-              By submitting, you agree to be contacted about your business
-              matter.
+            <p className="text-xs text-foreground-tertiary">
+              [] I hereby expressly consent to receive automated communications
+              including calls, texts, emails, and/or prerecorded messages.
             </p>
+            <p className="text-xs text-foreground-tertiary">
+              By submitting this form, you agree to our{" "}
+              <a
+                href="https://www.inhouse.ai/terms-of-service"
+                target="_blank"
+                className="underline"
+              >
+                Terms
+              </a>{" "}
+              & acknowledge our{" "}
+              <a
+                href="https://www.inhouse.ai/privacy-policy"
+                target="_blank"
+                className="underline"
+              >
+                Privacy Policy.
+              </a>
+            </p>
+            <button
+              onClick={handleSubmit}
+              disabled={loading}
+              // loading={loading}
+              // block
+              className={`text-white rounded-[999px] w-full bg-[#1B2B48] px-[24px] py-[12px] 
+                hover:bg-[#111827] flex items-center justify-center gap-2 ${
+                  loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+            >
+              Submit{" "}
+              <span className="">
+                <ArrowRightIcon />
+              </span>
+            </button>
           </div>
         </div>
       </div>
@@ -227,47 +270,66 @@ export function BusinessMatchedScreen({
 
   // Initial Card View
   return (
-    <div className="flex p-4 md:h-[480px] h-[480px]  overflow-y-auto">
-      <div className="flex gap-3 w-full flex-col shadow ">
-        {/* Card: Benefits + CTA for Business */}
-        <div className="bg-background-secondary rounded-xl shadow-lg flex-1 flex flex-col justify-between border-[0.5px] border-[#0D0D0D26] py-6">
-          <div className="gap-4 flex flex-col mb-4 p-4">
-            <div className="flex items-start gap-4">
-              <p className=" text-foreground-primary flex flex-col md:flex-row">
-                <span className="font-[700] text-[16px] leading-[140%] text-[#0D0D0D]">
-                  Business Legal Consultation
-                </span>
-                <span className="md:px-2 font-[400] text-[14px] leading-[20px] text-[#0D0D0D] items-center flex md:pt-1">
-                  Expert Business Law Support
-                </span>
-              </p>
-            </div>
-
-            <div className="flex items-start gap-1">
-              <ul className="text-[#5D5D5D] text-[14px] leading-[20px] list-disc ml-4 flex flex-col gap-3">
-                <li>
-                  Connect with an experienced business law attorney for
-                  consultation
-                </li>
-                <li>
-                  Contract disputes, corporate matters, and commercial
-                  litigation
-                </li>
-                <li>Get expert guidance on your business legal needs</li>
-              </ul>
-            </div>
+    <div className="flex p-4   overflow-y-auto">
+      <div className="bg-background-secondary rounded-xl shadow-sm border border-[#E5E7EB] shadow-md">
+        {/* Header with green background */}
+        <div className="bg-[#E3EFE3] rounded-t-xl px-4 py-3">
+          <div className="flex items-center gap-2">
+            <CheckCircleIcon />
+            <h2 className="text-[#166534] font-semibold text-lg">
+              You've been matched
+            </h2>
           </div>
-          <div className="flex flex-col md:flex-row gap-4 p-4">
-            <Button
-              color="primary"
+        </div>
+
+        {/* Content */}
+        <div className="p-4 space-y-4">
+          {/* Who */}
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 mt-0.5 text-[#027A48]">
+              <UserCircleCheckIcon />
+            </div>
+            <p className="text-[14px] text-[#374151]">
+              <span className="font-semibold text-[#111827]">Who: </span>
+              {matchInfo.who}
+            </p>
+          </div>
+          <hr className="text-[#D1D1D1]" />
+
+          {/* Why */}
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 mt-0.5 text-[#027A48]">
+              <HandHeartIcon />
+            </div>
+            <p className="text-[14px] text-[#374151]">
+              <span className="font-semibold text-[#111827]">Why: </span>
+              {matchInfo.why}
+            </p>
+          </div>
+          <hr className="text-[#D1D1D1]" />
+
+          {/* Next steps */}
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 mt-0.5 transform rotate-270 text-[#027A48]">
+              <ArrowsMergeIcon />
+            </div>
+            <p className="text-[14px] text-[#374151]">
+              <span className="font-semibold text-[#111827]">Next steps: </span>
+              {matchInfo.nextSteps}
+            </p>
+          </div>
+
+          {/* CTA Button */}
+          <div className="pt-2">
+            <button
               onClick={() => {
                 changeFormShowStatus(true);
               }}
               id="show-form-button"
-              className="text-white rounded-lg py-[20px] w-[100%] px-4 text-[14px]"
+              className="w-full bg-[#1F2937] hover:bg-[#111827] text-white font-medium py-3 px-4 rounded-full transition-colors text-sm"
             >
               Get Business Consultation
-            </Button>
+            </button>
           </div>
         </div>
       </div>

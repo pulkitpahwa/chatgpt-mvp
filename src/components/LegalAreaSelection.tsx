@@ -87,7 +87,7 @@ export function LegalAreaSelection() {
   const navigate = useNavigate();
 
   return (
-    <div className="max-h-[480px] overflow-y-auto">
+    <div className="max-h-[400px] overflow-y-auto">
       <div className="bg-background-secondary rounded-xl p-6 shadow-sm border-[0.5px] border-[#0D0D0D26]">
         <div className="mb-6">
           <h1 className="text-lg font-semibold text-foreground-primary mb-2">

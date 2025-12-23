@@ -17,7 +17,7 @@ export interface UserInfo {
 }
 
 export interface StructuredContent {
-  intent?: 'consultation' | 'business_consultation' | 'personal_injury' | 'msa_draft' | 'finalization' | 'payment' | 'unsupported_area';
+  intent?: 'consultation' | 'business_consultation' | 'personal_injury' | 'msa_draft' | 'finalization' | 'payment' | 'unsupported_area' | 'unsupported_location';
   status?: string;
   user_id?: string;
   message?: string;
@@ -27,7 +27,7 @@ export interface StructuredContent {
 }
 
 export interface ToolOutput {
-  intent?: 'consultation' | 'business_consultation' | 'personal_injury' | 'msa_draft' | 'finalization' | 'payment' | 'unsupported_area';
+  intent?: 'consultation' | 'business_consultation' | 'personal_injury' | 'msa_draft' | 'finalization' | 'payment' | 'unsupported_area' | 'unsupported_location';
   content?: Array<{ type: string; text: string }>;
   structuredContent?: StructuredContent;
   data?: unknown;

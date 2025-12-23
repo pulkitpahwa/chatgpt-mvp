@@ -31,6 +31,7 @@ export function BusinessConsultationPage() {
   const navigate = useNavigate();
   const [success, setSuccess] = useState(false);
   const [showMatchedScreen, setShowMatchedScreen] = useState(false);
+  // const [data, setData] = useState("");
 
   const { loading, error, callTool } = useRequestConsultation();
 
@@ -58,6 +59,7 @@ export function BusinessConsultationPage() {
     const result = await callTool(args);
     console.log("Business consultation request result:");
     console.log(JSON.stringify(result, null, 2));
+    // setData(JSON.stringify(result, null, 2));
 
     // Check for successful response using structuredContent
     const isSuccess = result?.structuredContent?.status === "complete";
@@ -83,7 +85,7 @@ export function BusinessConsultationPage() {
   // Success state
   if (success) {
     return (
-      <div className="p-4 max-h-[480px] overflow-y-auto">
+      <div className="p-4 max-h-[400px] overflow-y-auto">
         <div className="bg-background-secondary rounded-xl p-6 shadow-sm">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
@@ -124,9 +126,7 @@ export function BusinessConsultationPage() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-500 font-medium shrink-0">3.</span>
-                <span>
-                  Get expert guidance tailored to your business needs
-                </span>
+                <span>Get expert guidance tailored to your business needs</span>
               </li>
             </ul>
           </div>
@@ -142,11 +142,13 @@ export function BusinessConsultationPage() {
   // Show Business matched screen with form
   if (showMatchedScreen) {
     return (
-      <BusinessMatchedScreen
-        onSubmit={handleSubmit}
-        loading={loading}
-        error={error}
-      />
+      <>
+        <BusinessMatchedScreen
+          onSubmit={handleSubmit}
+          loading={loading}
+          error={error}
+        />
+      </>
     );
   }
 

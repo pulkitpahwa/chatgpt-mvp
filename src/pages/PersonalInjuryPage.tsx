@@ -96,7 +96,7 @@ export function PersonalInjuryPage() {
   // Success state
   if (success) {
     return (
-      <div className="p-4 max-h-[480px] overflow-y-auto">
+      <div className="p-4 max-h-[400px] overflow-y-auto">
         <div className="bg-background-secondary rounded-xl p-6 shadow-sm">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { Button } from "@openai/apps-sdk-ui/components/Button";
 
 const InfoIcon = () => (
@@ -18,10 +18,10 @@ const InfoIcon = () => (
 );
 
 export function NotAvailablePage() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   return (
-    <div className="max-h-[480px] overflow-y-auto">
+    <div className="max-h-[400px] overflow-y-auto">
       <div className="bg-background-secondary rounded-xl p-6 shadow-sm border-[0.5px] border-[#0D0D0D26]">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
@@ -62,13 +62,8 @@ export function NotAvailablePage() {
         </div>
 
         <div className="space-y-3">
-          <a href="" target="_blank">
-            <Button
-              color="primary"
-              className="text-white rounded-lg"
-              onClick={() => navigate("/")}
-              block
-            >
+          <a href="https://www.inhouse.ai" target="_blank">
+            <Button color="primary" className="text-white rounded-lg" block>
               Visit Inhouse
             </Button>
           </a>

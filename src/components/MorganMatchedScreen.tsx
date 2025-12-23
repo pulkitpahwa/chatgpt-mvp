@@ -1,9 +1,15 @@
 import { useState } from "react";
-import { Button } from "@openai/apps-sdk-ui/components/Button";
+// import { Button } from "@openai/apps-sdk-ui/components/Button";
 import { Input } from "@openai/apps-sdk-ui/components/Input";
 import { Textarea } from "@openai/apps-sdk-ui/components/Textarea";
 import { Alert } from "@openai/apps-sdk-ui/components/Alert";
-import MMIntroImage from "../../public/mm-intro.png";
+import {
+  ArrowsMergeIcon,
+  HandHeartIcon,
+  UserCircleCheckIcon,
+  CheckCircleIcon,
+  ArrowRightIcon,
+} from "@phosphor-icons/react";
 
 // Extend Window interface for webplus
 declare global {
@@ -45,16 +51,31 @@ interface FormErrors {
   phone?: string;
 }
 
+interface MatchInfo {
+  who: string;
+  why: string;
+  nextSteps: string;
+}
+
 interface MorganMatchedScreenProps {
   onSubmit: (data: FormData & { phone: string }) => Promise<void>;
   loading?: boolean;
   error?: Error | null;
+  matchInfo?: MatchInfo;
 }
+
+const defaultMatchInfo: MatchInfo = {
+  who: "Morgan & Morgan, a national law firm of 1,000 PI attorneys in all 50 states",
+  why: "Your chat describes a plane accident at the runway at JFK, and this firm has a strong aviation practice in NY",
+  nextSteps:
+    "The NY office will review your chat and call you within 24 hours to discuss your case. If they take it, you pay only if they win.",
+};
 
 export function MorganMatchedScreen({
   onSubmit,
   loading = false,
   error = null,
+  matchInfo = defaultMatchInfo,
 }: MorganMatchedScreenProps) {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState<FormData>({
@@ -102,7 +123,7 @@ export function MorganMatchedScreen({
   if (showForm) {
     return (
       <div className=" overflow-y-auto">
-        <div className="bg-background-secondary rounded-xl shadow-sm">
+        <div className="bg-background-secondary rounded-xl shadow-sm p-4">
           {/* Back button and title */}
           <div className="flex items-center gap-2 mb-3">
             <button
@@ -209,70 +230,111 @@ export function MorganMatchedScreen({
               />
             )}
 
-            {/* Submit button */}
-            <Button
-              color="primary"
-              onClick={handleSubmit}
-              loading={loading}
-              block
-              className={`text-white rounded-lg py-2 w-[100%] px-4`}
-            >
-              Send to lawyer
-            </Button>
-
-            <p className="text-xs text-foreground-tertiary text-center">
-              By submitting, you agree to be contacted about your case.
+            <p className="text-xs text-foreground-tertiary">
+              [] I hereby expressly consent to receive automated communications
+              including calls, texts, emails, and/or prerecorded messages.
             </p>
+            <p className="text-xs text-foreground-tertiary">
+              By submitting this form, you agree to our{" "}
+              <a
+                href="https://www.inhouse.ai/terms-of-service"
+                target="_blank"
+                className="underline"
+              >
+                Terms
+              </a>{" "}
+              & acknowledge our{" "}
+              <a
+                href="https://www.inhouse.ai/privacy-policy"
+                target="_blank"
+                className="underline"
+              >
+                Privacy Policy.
+              </a>
+            </p>
+            <button
+              onClick={handleSubmit}
+              disabled={loading}
+              // loading={loading}
+              // block
+              className={`text-white rounded-[999px] w-full bg-[#1B2B48] px-[24px] py-[12px] 
+                hover:bg-[#111827] flex items-center justify-center gap-2 ${
+                  loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+            >
+              Submit{" "}
+              <span className="">
+                <ArrowRightIcon />
+              </span>
+            </button>
           </div>
         </div>
       </div>
     );
   }
 
-  // Two-Card View (default)
+  // Matched View (default)
   return (
-    <div className="h-[480px] max-h-[480px] overflow-y-auto">
-      <div className="flex gap-2 w-full flex-col">
-        {/* Card: Benefits + CTA */}
-        <div className="bg-background-secondary rounded-xl p-4 shadow-lg flex-1 flex flex-col justify-center border-[0.5px] border-[#0D0D0D26]">
-          <img
-            src={MMIntroImage}
-            alt="Morgan & Morgan"
-            className="mb-3 rounded h-[160px] object-cover object-top"
-          />
-          <div className="gap-2 flex flex-col mb-3">
-            <div className="flex items-start gap-2">
-              <p className="text-sm text-foreground-primary flex flex-col md:flex-row">
-                <span className="font-[700] text-[16px] leading-[150%] text-[#0D0D0D]">
-                  Connect to Morgan & Morgan
-                </span>
-                <span className="md:px-2 font-[400] text-[13px] leading-[18px] text-[#0D0D0D] items-center flex md:pt-0.5">
-                  $30 Billion Recovered for Clients
-                </span>
-              </p>
-            </div>
-
-            <div className="flex items-start gap-2">
-              <ul className="text-[#5D5D5D] text-[13px] leading-[18px] list-disc ml-5 flex flex-col gap-1">
-                <li>
-                  Share this chat with an experienced local lawyer for free
-                  consultation
-                </li>
-                <li>Pay nothing if your case is accepted</li>
-              </ul>
-            </div>
+    <div className="overflow-y-auto p-2">
+      <div className="bg-background-secondary rounded-xl shadow-sm border border-[#E5E7EB] shadow-md">
+        {/* Header with green background */}
+        <div className="bg-[#E3EFE3] rounded-t-xl px-4 py-3">
+          <div className="flex items-center gap-2">
+            <CheckCircleIcon />
+            <h2 className="text-[#166534] font-semibold text-lg">
+              You've been matched
+            </h2>
           </div>
-          <div className="flex flex-col md:flex-row gap-3">
-            <Button
-              color="primary"
+        </div>
+
+        {/* Content */}
+        <div className="p-4 space-y-4">
+          {/* Who */}
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 mt-0.5 text-[#027A48]">
+              <UserCircleCheckIcon />
+            </div>
+            <p className="text-[14px] text-[#374151]">
+              <span className="font-semibold text-[#111827]">Who: </span>
+              {matchInfo.who}
+            </p>
+          </div>
+          <hr className="text-[#D1D1D1]" />
+
+          {/* Why */}
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 mt-0.5 text-[#027A48]">
+              <HandHeartIcon />
+            </div>
+            <p className="text-[14px] text-[#374151]">
+              <span className="font-semibold text-[#111827]">Why: </span>
+              {matchInfo.why}
+            </p>
+          </div>
+          <hr className="text-[#D1D1D1]" />
+
+          {/* Next steps */}
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 mt-0.5 transform rotate-270 text-[#027A48]">
+              <ArrowsMergeIcon />
+            </div>
+            <p className="text-[14px] text-[#374151]">
+              <span className="font-semibold text-[#111827]">Next steps: </span>
+              {matchInfo.nextSteps}
+            </p>
+          </div>
+
+          {/* CTA Button */}
+          <div className="pt-2">
+            <button
               onClick={() => {
                 changeFormShowStatus(true);
               }}
               id="show-form-button"
-              className="text-white rounded-lg py-2 w-[100%] px-4 text-[14px]"
+              className="w-full bg-[#1F2937] hover:bg-[#111827] text-white font-medium py-3 px-4 rounded-full transition-colors text-sm"
             >
-              Consult Now, It's Free!
-            </Button>
+              Connect with Morgan & Morgan
+            </button>
           </div>
         </div>
       </div>

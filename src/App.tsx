@@ -7,6 +7,7 @@ import { Home } from './pages/Home';
 import { PersonalInjuryPage } from './pages/PersonalInjuryPage';
 import { BusinessConsultationPage } from './pages/BusinessConsultationPage';
 import { NotAvailablePage } from './pages/NotAvailablePage';
+import { UnsupportedLocationPage } from './pages/UnsupportedLocationPage';
 
 // Note: Authentication is handled by ChatGPT via OAuth flow with the MCP server.
 // When tools require authentication, ChatGPT prompts the user to sign in.
@@ -28,6 +29,7 @@ function App() {
               <Route path="/personal-injury" element={<PersonalInjuryPage />} />
               <Route path="/business-consultation" element={<BusinessConsultationPage />} />
               <Route path="/not-available" element={<NotAvailablePage />} />
+              <Route path="/unsupported-location" element={<UnsupportedLocationPage />} />
             </Routes>
           </WidgetContainer>
         </AppProvider>

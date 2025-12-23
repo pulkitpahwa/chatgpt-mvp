@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { LoadingDots } from "@openai/apps-sdk-ui/components/Indicator";
-import INHOUSE_LOGO_URL from "../../public/inhouse.svg";
-
+// import { LoadingDots } from "@openai/apps-sdk-ui/components/Indicator";
+import INHOUSE_LOGO from "../../public/inhouselogo-50x50.jpg";
+// import US_MAP from "../../public/usa-map.jpg";
+import US_MAP from "../../public/usa-map.svg";
 interface TransitionScreenProps {
   message?: string;
   rotatingMessages?: string[];
@@ -9,9 +10,10 @@ interface TransitionScreenProps {
 }
 
 const DEFAULT_ROTATING_MESSAGES = [
-  "Analyzing your chat",
-  "Conducting research",
-  "Finding lawyers with relevant experience",
+  "Reviewing your chat...",
+  "Identifying relevant legal issues...",
+  "Searching our network of vetted lawyers...",
+  "Preparing your match...",
 ];
 
 export function TransitionScreen({
@@ -40,14 +42,19 @@ export function TransitionScreen({
   const displayMessage = message || rotatingMessages[currentIndex];
 
   return (
-    <div className="flex flex-col items-center justify-center p-8 md:h-[480px] min-h-[200px] bg-background-secondary rounded-lg gap-6">
-      <img src={INHOUSE_LOGO_URL} alt="Inhouse Logo" className="w-64 my-4" />
+    <div className="flex flex-col items-center justify-center p-4 bg-background-secondary rounded-lg gap-4">
+      <img src={INHOUSE_LOGO} alt="Inhouse Logo" className="w-[50px]" />
 
       <p className="text-foreground-secondary animate-fade-in flex flex-row gap-4">
         <span>{displayMessage}</span>
-        <sub className="">
+        {/* <sub className="">
           <LoadingDots />
-        </sub>
+        </sub> */}
+      </p>
+
+      <img src={US_MAP} alt="USA Map" className="w-[100%] max-w-[400px]" />
+      <p className="text-foreground-secondary animate-fade-in flex flex-row gap-4">
+        2,000+ lawyers in all 50 states
       </p>
     </div>
   );
