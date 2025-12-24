@@ -39,7 +39,7 @@ export function LegalAreaSelection() {
   // const navigate = useNavigate();
 
   return (
-    <div className=" overflow-y-auto p-4">
+    <div className=" overflow-y-auto p-4 bg-white">
       Dear user, <br />
       we are unable to identify your current requirements. please answer the
       questions as mentioned in the following message.

@@ -8,6 +8,7 @@ import {
   CheckCircleIcon,
   ArrowRightIcon,
   XIcon,
+  CheckIcon,
 } from "@phosphor-icons/react";
 import { useAppSelector } from "../store/hooks";
 
@@ -41,6 +42,7 @@ export interface MatchInfo {
 
 interface MatchedScreenLabels {
   firmName: string;
+  title: string;
   whoLabel: string;
   whyLabel: string;
   nextStepsLabel: string;
@@ -77,6 +79,7 @@ export function MatchedScreen({
     notes: "",
   });
   const [formErrors, setFormErrors] = useState<FormErrors>({});
+  const [consentChecked, setConsentChecked] = useState(false);
 
   // Get match data from Redux store
   const reduxMatchData = useAppSelector((state) => state.match);
@@ -84,11 +87,8 @@ export function MatchedScreen({
   // Use Redux state if available, otherwise fall back to props or defaults
   const matchInfo: MatchInfo = {
     who:
-      reduxMatchData.message_copy ||
-      propMatchInfo?.who ||
-      defaultMatchInfo.who,
-    why:
-      reduxMatchData.why_copy || propMatchInfo?.why || defaultMatchInfo.why,
+      reduxMatchData.message_copy || propMatchInfo?.who || defaultMatchInfo.who,
+    why: reduxMatchData.why_copy || propMatchInfo?.why || defaultMatchInfo.why,
     nextSteps:
       reduxMatchData.nextsteps_copy ||
       propMatchInfo?.nextSteps ||
@@ -98,13 +98,13 @@ export function MatchedScreen({
   const changeFormShowStatus = (status: boolean) => {
     setShowForm(status);
     window.scrollTo(0, 0);
-    if (status) {
-      if (window?.webplus?.requestDisplayMode) {
-        window.webplus.requestDisplayMode({ mode: "fullscreen" });
-      }
-    } else {
-      document.exitFullscreen?.();
-    }
+    // if (status) {
+    //   if (window?.webplus?.requestDisplayMode) {
+    //     window.webplus.requestDisplayMode({ mode: "fullscreen" });
+    //   }
+    // } else {
+    //   document.exitFullscreen?.();
+    // }
   };
 
   const validateForm = (): boolean => {
@@ -117,6 +117,16 @@ export function MatchedScreen({
       errors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       errors.email = "Please enter a valid email";
+    }
+
+    // Phone validation - accepts formats like: (123) 456-7890, 123-456-7890, 1234567890, +1 123 456 7890
+    if (!formData.phone.trim()) {
+      errors.phone = "Phone number is required";
+    } else {
+      const phoneDigits = formData.phone.replace(/\D/g, "");
+      if (phoneDigits.length < 10 || phoneDigits.length > 15) {
+        errors.phone = "Please enter a valid phone number (10-15 digits)";
+      }
     }
 
     setFormErrors(errors);
@@ -137,13 +147,16 @@ export function MatchedScreen({
           <div className="flex flex-col">
             <button
               onClick={() => setShowForm(false)}
-              className="p-4 rounded-full shadow-lg w-4 h-4 border border-[0.5px] border-[#0D0D0D1A] hover:bg-background-tertiary transition-colors flex items-center justify-center"
+              className="cursor-pointer p-4 rounded-full shadow-lg w-4 h-4 border border-[0.5px] border-[#0D0D0D1A] hover:bg-background-tertiary transition-colors flex items-center justify-center text-[#000]"
               aria-label="Go back"
             >
-              <XIcon />
+              <XIcon
+                onClick={() => setShowForm(false)}
+                className="cursor-pointer"
+              />
             </button>
-            <div className="flex text-center gap-2 mb-4">
-              <h2 className="text-[18px] text-center w-full font-semibold text-foreground-primary">
+            <div className="flex text-center gap-2 mb-4 mt-[-20px]">
+              <h2 className="text-[18px] text-center w-full font-semibold text-foreground-primary text-dark text-black">
                 {labels.formTitle}
               </h2>
             </div>
@@ -155,14 +168,14 @@ export function MatchedScreen({
           {/* Form */}
           <div className="flex gap-2 flex-col">
             {/* Row 1: Full Name, Phone, Email */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               <div>
-                <label className="block text-sm font-medium text-foreground-primary mb-1">
+                <label className="block text-sm font-medium text-foreground-primary mb-1 text-dark text-black">
                   Full Name <span className="text-red-500">*</span>
                 </label>
                 <Input
                   value={formData.name}
-                  className="h-[48px] px-[16px]"
+                  className="h-[48px] px-[16px] border-[1px] border-gray-100 focus:border-red-500 focus:border-[1px] focus:ring-0 focus:outline-none transition-colors text-[#000] placeholder-gray-400"
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
@@ -174,18 +187,18 @@ export function MatchedScreen({
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-foreground-primary mb-1">
+                <label className="block text-sm font-medium text-foreground-primary mb-1 text-dark text-black">
                   Phone Number <span className="text-red-500">*</span>
                 </label>
                 <Input
-                  className="h-[48px] px-[16px]"
+                  className="h-[48px] px-[16px] border-[1px] border-gray-100 focus:border-red-500 focus:border-[1px] focus:ring-0 focus:outline-none transition-colors text-[#000] placeholder-gray-400"
                   type="tel"
                   value={formData.phone}
                   onChange={(e) =>
                     setFormData({ ...formData, phone: e.target.value })
                   }
                   invalid={!!formErrors.phone}
-                  placeholder="Enter your phone"
+                  placeholder="Enter Your Phone. e.g.: (123) 456-7890"
                 />
                 {formErrors.phone && (
                   <p className="text-sm text-red-500 mt-1">
@@ -194,18 +207,18 @@ export function MatchedScreen({
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-foreground-primary mb-1">
-                  Email Address
+                <label className="block text-sm font-medium text-dark text-black mb-1">
+                  Email Address <span className="text-red-500">*</span>
                 </label>
                 <Input
-                  className="h-[48px] px-[16px]"
+                  className="h-[48px] px-[16px] border-[1px] border-gray-100 focus:border-red-500 focus:border-[1px] focus:ring-0 focus:outline-none transition-colors text-[#000] placeholder-gray-400"
                   type="email"
                   value={formData.email}
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
                   invalid={!!formErrors.email}
-                  placeholder="your@email.com"
+                  placeholder="Enter your email address"
                 />
                 {formErrors.email && (
                   <p className="text-sm text-red-500 mt-1">
@@ -220,51 +233,82 @@ export function MatchedScreen({
               <Alert
                 color="danger"
                 title="Error"
-                description={
-                  error.message || "Failed to submit. Please try again."
-                }
+                description={error.message}
+                className="p-2"
               />
             )}
 
-            <p className="text-xs text-foreground-tertiary my-3">
-              <span>
-                <input
-                  type="checkbox"
-                  className="border w-2 h-2"
-                  required
-                  checked
-                  name="consent"
-                />
-              </span>{" "}
-              <span>
-                I hereby express my consent to receive automated communications
-                including calls, texts, emails, and/or prerecorded messages.
-              </span>
-            </p>
-            <p className="text-xs text-foreground-tertiary">
-              By submitting this form, you agree to our{" "}
-              <a
-                href={labels.termsUrl}
-                target="_blank"
-                className="underline"
+            <label className="text-xs text-foreground-tertiary my-3 flex items-start gap-2 cursor-pointer text-dark text-black">
+              <div
+                className={`w-4 h-4 mt-0.5 flex-shrink-0 border rounded flex items-center justify-center ${
+                  consentChecked
+                    ? "bg-[#1B2B48] border-[#1B2B48]"
+                    : "border-gray-300 bg-white"
+                }`}
               >
-                Terms
-              </a>{" "}
-              & acknowledge our{" "}
-              <a
-                href={labels.privacyUrl}
-                target="_blank"
-                className="underline"
-              >
-                Privacy Policy.
-              </a>
-            </p>
+                {consentChecked && (
+                  <CheckIcon className="w-3 h-3 text-white" weight="bold" />
+                  // <svg
+                  //   className="w-3 h-3 text-white"
+                  //   fill="none"
+                  //   stroke="currentColor"
+                  //   viewBox="0 0 24 24"
+                  // >
+                  //   <path
+                  //     strokeLinecap="round"
+                  //     strokeLinejoin="round"
+                  //     strokeWidth={3}
+                  //     d="M5 13l4 4L19 7"
+                  //   />
+                  // </svg>
+                )}
+              </div>
+              <div className="flex flex-col gap-4">
+                <div>
+                  <input
+                    type="checkbox"
+                    className="sr-only rounded-full"
+                    required
+                    checked={consentChecked}
+                    onChange={(e) => setConsentChecked(e.target.checked)}
+                    name="consent"
+                  />
+                  <div className="md:flex  md:flex-col gap-1 md:gap-2">
+                    <span className="text-black text-dark">
+                      I hereby express my consent to receive automated
+                      communications including calls, texts, emails, and/or
+                      prerecorded messages.{" "}
+                    </span>
+                    <span className="text-black text-dark">
+                      By submitting this form, you agree to our{" "}
+                      <a
+                        href={labels.termsUrl}
+                        target="_blank"
+                        className="underline"
+                      >
+                        Terms
+                      </a>{" "}
+                      & acknowledge our{" "}
+                      <a
+                        href={labels.privacyUrl}
+                        target="_blank"
+                        className="underline"
+                      >
+                        Privacy Policy
+                      </a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </label>
             <button
               onClick={handleSubmit}
-              disabled={loading}
-              className={`text-white mt-4 rounded-[999px] w-full bg-[#1B2B48] px-[24px] py-[12px]
+              disabled={loading || !consentChecked}
+              className={`text-white mt-2 rounded-[999px] w-full bg-[#1B2B48] px-[24px] py-[12px]
                 hover:bg-[#111827] flex items-center justify-center gap-2 ${
-                  loading ? "opacity-50 cursor-not-allowed" : ""
+                  loading || !consentChecked
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
                 }`}
             >
               {labels.submitButtonText}{" "}
@@ -285,9 +329,9 @@ export function MatchedScreen({
         {/* Header with green background */}
         <div className="bg-[#E3EFE3] rounded-t-xl px-4 py-3">
           <div className="flex items-center gap-2">
-            <CheckCircleIcon />
+            <CheckCircleIcon className="text-[#166534] " />
             <h2 className="text-[#166534] font-semibold text-lg">
-              You've been matched
+              {labels.title}
             </h2>
           </div>
         </div>

@@ -8,13 +8,15 @@ const defaultMatchInfo: MatchInfo = {
 };
 
 const labels = {
+  title: "You've been matched",
   firmName: "Morgan & Morgan",
   whoLabel: "Law Firm:",
   whyLabel: "Relevant experience:",
   nextStepsLabel: "What's next:",
   connectButtonText: "Connect with Morgan & Morgan",
   formTitle: "Connect with Morgan & Morgan",
-  formSubtitle: "Your chat summary will be shared along with the form submission",
+  formSubtitle:
+    "Your chat summary will be shared along with the form submission",
   submitButtonText: "Submit",
   termsUrl: "https://www.forthepeople.com/terms-of-use/",
   privacyUrl: "https://www.forthepeople.com/privacy-policy/",

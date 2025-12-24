@@ -22,11 +22,22 @@ export function Home() {
     const intent =
       toolOutput?.match_category ||
       toolOutput?.structuredContent?.match_category;
-    setMessage(toolOutput?.structuredContent?.message);
     const matchStatus =
       toolOutput?.structuredContent?.match_status || toolOutput?.match_status;
+    setMessage(toolOutput?.structuredContent?.message);
     setModalWhyCopy(toolOutput?.structuredContent?.modal_why_copy);
     setModalNextStepsCopy(toolOutput?.structuredContent?.modal_next_steps_copy);
+
+    var a = {
+      match_category: "other",
+      match_status: "match_not_found",
+      content: null,
+      structuredContent: {
+        message:
+          "We appreciate your interest in our legal services. Currently, we serve only personal injury and business consultation cases in the USA. We still welcome you to submit your details and we will try to find a lawyer for you and reach out in 5 business days if we can find a matching lawyer",
+        context_id: "694bf786b0e645a244fc6528",
+      },
+    };
 
     dispatch(
       setMatchData({
@@ -49,8 +60,6 @@ export function Home() {
             | null) ?? "pending",
       })
     );
-    console.log(isLoading, isWaitingForBackend);
-    console.log("Tool output:", JSON.stringify(toolOutput));
 
     setMessage(message || null);
     setModalWhyCopy(modal_why_copy || null);
@@ -64,7 +73,7 @@ export function Home() {
       navigate("/personal-injury", { replace: true });
     } else if (intent === "business_consultation") {
       navigate("/business-consultation", { replace: true });
-    } else if (intent === "unsupported_area") {
+    } else if (intent === "other") {
       navigate("/not-available", { replace: true });
     } else if (intent === "unsupported_location") {
       navigate("/unsupported-location", { replace: true });
@@ -75,7 +84,7 @@ export function Home() {
   // Show loading state while waiting for initial load
   if (isLoading || isWaitingForBackend) {
     return (
-      <div className="">
+      <div className="bg-white">
         <TransitionScreen />
       </div>
     );

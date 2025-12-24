@@ -1,6 +1,17 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { useTheme, useDisplayMode, useToolOutput, useIsOpenAiAvailable } from '../hooks/useOpenAiGlobal';
-import type { DisplayMode, Theme, ToolOutput } from '../types/openai';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
+import {
+  useTheme,
+  useDisplayMode,
+  useToolOutput,
+  useIsOpenAiAvailable,
+} from "../hooks/useOpenAiGlobal";
+import type { DisplayMode, Theme, ToolOutput } from "../types/openai";
 
 interface AppContextValue {
   theme: Theme;
@@ -24,7 +35,9 @@ function hasBackendResponse(toolOutput: ToolOutput | undefined): boolean {
   if (!toolOutput) return false;
 
   // Check for intent at top level or in structuredContent
-  const hasIntent = !!(toolOutput.intent || toolOutput.structuredContent?.intent);
+  const hasIntent = !!(
+    toolOutput.intent || toolOutput.structuredContent?.intent
+  );
 
   // Check for any structured content
   const hasStructuredContent = !!(
@@ -47,31 +60,31 @@ export function AppProvider({ children }: AppProviderProps) {
 
   // Determine loading states
   const isLoading = !initialCheckComplete;
-  const isWaitingForBackend = isOpenAiAvailable && !hasBackendResponse(toolOutput);
+  const isWaitingForBackend =
+    isOpenAiAvailable && !hasBackendResponse(toolOutput);
 
   // Check for window.openai availability or set up mock for local testing
   useEffect(() => {
     // Check for mock_intent in URL (for local testing)
     const urlParams = new URLSearchParams(window.location.search);
-    const mockIntent = urlParams.get('mock_intent');
+    const mockIntent = urlParams.get("mock_intent");
 
     if (mockIntent && !window.openai) {
-      console.log('[AppContext] Setting up mock window.openai with intent:', mockIntent);
       window.openai = {
-        theme: 'light',
-        locale: 'en-US',
-        displayMode: 'inline',
-        userAgent: '',
+        theme: "light",
+        locale: "en-US",
+        displayMode: "inline",
+        userAgent: "",
         maxHeight: 600,
         safeArea: { top: 0, right: 0, bottom: 0, left: 0 },
         toolInput: {},
         toolResponseMetadata: {},
         widgetState: {},
         toolOutput: {
-          intent: mockIntent as 'consultation' | 'personal_injury',
+          intent: mockIntent as "consultation" | "personal_injury",
           structuredContent: {
-            intent: mockIntent as 'consultation' | 'personal_injury',
-            status: 'selection',
+            intent: mockIntent as "consultation" | "personal_injury",
+            status: "selection",
             message: `Test mode: showing ${mockIntent} page`,
           },
         },
@@ -81,33 +94,36 @@ export function AppProvider({ children }: AppProviderProps) {
         setWidgetState: () => {},
         requestClose: () => {},
         openExternal: () => {},
-        uploadFile: async () => ({ fileId: 'mock-file-id' }),
-        getFileDownloadUrl: async () => ({ url: '', expiresAt: '' }),
+        uploadFile: async () => ({ fileId: "mock-file-id" }),
+        getFileDownloadUrl: async () => ({ url: "", expiresAt: "" }),
       };
       // Dispatch event so hooks pick up the change
-      window.dispatchEvent(new Event('openai:set_globals'));
+      window.dispatchEvent(new Event("openai:set_globals"));
     }
 
     // Complete initial check after a short delay
-    const timeout = setTimeout(() => {
-      setInitialCheckComplete(true);
-    }, window.openai ? 0 : 2000);
+    const timeout = setTimeout(
+      () => {
+        setInitialCheckComplete(true);
+      },
+      window.openai ? 0 : 2000
+    );
 
     return () => clearTimeout(timeout);
   }, []);
 
   // Apply theme to document for dark mode
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
+    document.documentElement.classList.toggle("dark", theme === "dark");
   }, [theme]);
 
   // Apply display mode class
   useEffect(() => {
-    document.body.classList.remove('widget-inline', 'widget-fullscreen');
-    if (displayMode === 'inline') {
-      document.body.classList.add('widget-inline');
-    } else if (displayMode === 'fullscreen') {
-      document.body.classList.add('widget-fullscreen');
+    document.body.classList.remove("widget-inline", "widget-fullscreen");
+    if (displayMode === "inline") {
+      document.body.classList.add("widget-inline");
+    } else if (displayMode === "fullscreen") {
+      document.body.classList.add("widget-fullscreen");
     }
   }, [displayMode]);
 
@@ -126,7 +142,7 @@ export function AppProvider({ children }: AppProviderProps) {
 export function useAppContext() {
   const context = useContext(AppContext);
   if (!context) {
-    throw new Error('useAppContext must be used within AppProvider');
+    throw new Error("useAppContext must be used within AppProvider");
   }
   return context;
 }

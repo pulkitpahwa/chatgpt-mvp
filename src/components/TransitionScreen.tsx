@@ -42,18 +42,18 @@ export function TransitionScreen({
   const displayMessage = message || rotatingMessages[currentIndex];
 
   return (
-    <div className="flex flex-col items-center justify-center p-4 bg-background-secondary rounded-lg gap-4">
+    <div className="flex flex-col items-center justify-center p-4 bg-white rounded-lg gap-4">
       <img src={INHOUSE_LOGO} alt="Inhouse Logo" className="w-[50px]" />
 
       <p className="text-foreground-secondary animate-fade-in flex flex-row gap-4">
-        <span>{displayMessage}</span>
+        <span className="text-[#000]">{displayMessage}</span>
         {/* <sub className="">
           <LoadingDots />
         </sub> */}
       </p>
 
       <img src={US_MAP} alt="USA Map" className="w-[100%] max-w-[250px]" />
-      <p className="text-foreground-secondary animate-fade-in flex flex-row gap-4">
+      <p className="text-foreground-secondary animate-fade-in flex flex-row gap-4 text-[#000]">
         2,000+ lawyers in all 50 states
       </p>
     </div>
