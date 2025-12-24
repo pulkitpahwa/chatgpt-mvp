@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 // import { LoadingDots } from "@openai/apps-sdk-ui/components/Indicator";
 import INHOUSE_LOGO from "../../public/inhouselogo-50x50.jpg";
 // import US_MAP from "../../public/usa-map.jpg";
-import US_MAP from "../../public/usa-map.svg";
+import US_MAP from "../../public/usa-map-3x.jpg";
 interface TransitionScreenProps {
   message?: string;
   rotatingMessages?: string[];
@@ -52,7 +52,7 @@ export function TransitionScreen({
         </sub> */}
       </p>
 
-      <img src={US_MAP} alt="USA Map" className="w-[100%] max-w-[400px]" />
+      <img src={US_MAP} alt="USA Map" className="w-[100%] max-w-[250px]" />
       <p className="text-foreground-secondary animate-fade-in flex flex-row gap-4">
         2,000+ lawyers in all 50 states
       </p>

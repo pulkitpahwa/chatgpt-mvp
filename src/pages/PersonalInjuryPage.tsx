@@ -10,6 +10,7 @@ import {
   requestDisplayMode,
   setWidgetState,
 } from "../hooks/useToolCall";
+import { useAppSelector } from "../store/hooks";
 
 // Check icon component
 const CheckIcon = () => (
@@ -35,6 +36,7 @@ export function PersonalInjuryPage() {
   const [showMatchedScreen, setShowMatchedScreen] = useState(false);
 
   const { loading, error, callTool } = useRequestConsultation();
+  const reduxMatchData = useAppSelector((state) => state.match);
 
   // Once backend responds, show the matched screen
   useEffect(() => {
@@ -59,11 +61,10 @@ export function PersonalInjuryPage() {
     notes: string;
   }) => {
     const args = {
-      consultation_type: "personal_injury",
       name: formData.name,
       email: formData.email,
       phone: formData.phone,
-      description: formData.notes || undefined,
+      context_id: reduxMatchData?.gpt_context_id || undefined,
     };
 
     const result = await callTool(args);
@@ -72,7 +73,6 @@ export function PersonalInjuryPage() {
 
     // Check for successful response using structuredContent
     const isSuccess = result?.structuredContent?.status === "complete";
-    alert(isSuccess);
 
     if (isSuccess) {
       setSuccess(true);
@@ -80,7 +80,9 @@ export function PersonalInjuryPage() {
 
       // Extract requestId from structuredContent
       const requestId = result.structuredContent?.requestId;
-      alert(`success:true, showmatchedscreen: false, requestId: ${requestId}`);
+      console.log(
+        `success:true, showmatchedscreen: false, requestId: ${requestId}`
+      );
 
       setWidgetState({
         consultationRequested: true,

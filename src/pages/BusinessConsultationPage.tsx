@@ -9,6 +9,7 @@ import {
   requestDisplayMode,
   setWidgetState,
 } from "../hooks/useToolCall";
+import { useAppSelector } from "../store/hooks";
 
 // Check icon component
 const CheckIcon = () => (
@@ -32,6 +33,7 @@ export function BusinessConsultationPage() {
   const [success, setSuccess] = useState(false);
   const [showMatchedScreen, setShowMatchedScreen] = useState(false);
   // const [data, setData] = useState("");
+  const reduxMatchData = useAppSelector((state) => state.match);
 
   const { loading, error, callTool } = useRequestConsultation();
 
@@ -46,14 +48,12 @@ export function BusinessConsultationPage() {
     name: string;
     email: string;
     phone: string;
-    notes: string;
   }) => {
     const args = {
-      consultation_type: "business_consultation",
       name: formData.name,
       email: formData.email,
       phone: formData.phone,
-      description: formData.notes || undefined,
+      context_id: reduxMatchData?.gpt_context_id || undefined,
     };
 
     const result = await callTool(args);

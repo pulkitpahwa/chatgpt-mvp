@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Input } from "@openai/apps-sdk-ui/components/Input";
-import { Textarea } from "@openai/apps-sdk-ui/components/Textarea";
+// import { Textarea } from "@openai/apps-sdk-ui/components/Textarea";
 import { Alert } from "@openai/apps-sdk-ui/components/Alert";
 import {
   ArrowRightIcon,
@@ -8,7 +8,9 @@ import {
   CheckCircleIcon,
   HandHeartIcon,
   UserCircleCheckIcon,
+  XIcon,
 } from "@phosphor-icons/react";
+import { useAppSelector } from "../store/hooks";
 
 // Extend Window interface for webplus
 declare global {
@@ -19,26 +21,10 @@ declare global {
   }
 }
 
-const BackIcon = () => (
-  <svg
-    className="w-4 h-4"
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M15 19l-7-7 7-7"
-    />
-  </svg>
-);
-
 interface FormData {
   name: string;
   email: string;
-  notes: string;
+  // notes: string;
   phone: string;
 }
 
@@ -72,17 +58,26 @@ export function BusinessMatchedScreen({
   onSubmit,
   loading = false,
   error = null,
-  matchInfo = defaultMatchInfo,
+  matchInfo: propMatchInfo,
 }: BusinessMatchedScreenProps) {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
-    notes: "",
     phone: "",
   });
   const [formErrors, setFormErrors] = useState<FormErrors>({});
+  const reduxMatchData = useAppSelector((state) => state.match);
 
+  const matchInfo: MatchInfo = {
+    who:
+      reduxMatchData.message_copy || propMatchInfo?.who || defaultMatchInfo.who,
+    why: reduxMatchData.why_copy || propMatchInfo?.why || defaultMatchInfo.why,
+    nextSteps:
+      reduxMatchData.nextsteps_copy ||
+      propMatchInfo?.nextSteps ||
+      defaultMatchInfo.nextSteps,
+  };
   const changeFormShowStatus = (status: boolean) => {
     setShowForm(status);
     window.scrollTo(0, 0);
@@ -120,25 +115,30 @@ export function BusinessMatchedScreen({
   if (showForm) {
     return (
       <div className="p-4 overflow-y-auto">
-        <div className="bg-background-secondary rounded-xl shadow-sm">
+        <div className="bg-background-secondary rounded-xl shadow-sm flex flex-col gap-3">
           {/* Back button and title */}
-          <div className="flex items-center gap-2 mb-4">
+          <div className="flex flex-col">
             <button
               onClick={() => setShowForm(false)}
-              className="p-1 rounded hover:bg-background-tertiary transition-colors"
+              className="p-4 rounded-full shadow-lg w-4 h-4 border border-[0.5px] border-[#0D0D0D1A] hover:bg-background-tertiary transition-colors flex items-center justify-center"
               aria-label="Go back"
             >
-              <BackIcon />
+              <XIcon />
             </button>
-            <h2 className="text-sm font-semibold text-foreground-primary">
-              Share your business details
-            </h2>
+            <div className="flex text-center gap-2 mb-4">
+              <h2 className="text-[18px] text-center w-full font-semibold text-foreground-primary">
+                Connect with Inhouse Counsel
+              </h2>
+            </div>
+            <p className="text-[16px] text-center text-[#011513]">
+              Your chat summary will be shared along with the form submission
+            </p>
           </div>
 
           {/* Form */}
-          <div className="space-y-3">
+          <div className="flex gap-2 flex-col">
             {/* Row 1: Full Name, Phone */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div>
                 <label className="block text-sm font-medium text-foreground-primary mb-1">
                   Full Name <span className="text-red-500">*</span>
@@ -198,22 +198,6 @@ export function BusinessMatchedScreen({
               </div>
             </div>
 
-            {/* Row 2: Additional details */}
-            <div>
-              <label className="block text-sm font-medium text-foreground-primary mb-1">
-                Business details (optional)
-              </label>
-              <Textarea
-                value={formData.notes}
-                className="py-[12px] px-[16px]"
-                onChange={(e) =>
-                  setFormData({ ...formData, notes: e.target.value })
-                }
-                placeholder="Describe your business legal needs"
-                rows={2}
-              />
-            </div>
-
             {/* Error banner */}
             {error && (
               <Alert
@@ -225,9 +209,20 @@ export function BusinessMatchedScreen({
               />
             )}
 
-            <p className="text-xs text-foreground-tertiary">
-              [] I hereby expressly consent to receive automated communications
-              including calls, texts, emails, and/or prerecorded messages.
+            <p className="text-xs text-foreground-tertiary my-3">
+              <span className="">
+                <input
+                  type="checkbox"
+                  className="border w-2 h-2"
+                  required
+                  checked
+                  name="consent"
+                />
+              </span>{" "}
+              <span>
+                I hereby express my consent to receive automated communications
+                including calls, texts, emails, and/or prerecorded messages.
+              </span>
             </p>
             <p className="text-xs text-foreground-tertiary">
               By submitting this form, you agree to our{" "}
@@ -252,7 +247,7 @@ export function BusinessMatchedScreen({
               disabled={loading}
               // loading={loading}
               // block
-              className={`text-white rounded-[999px] w-full bg-[#1B2B48] px-[24px] py-[12px] 
+              className={`text-white mt-4 rounded-[999px] w-full bg-[#1B2B48] px-[24px] py-[12px] 
                 hover:bg-[#111827] flex items-center justify-center gap-2 ${
                   loading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
@@ -291,7 +286,8 @@ export function BusinessMatchedScreen({
             </div>
             <p className="text-[14px] text-[#374151]">
               <span className="font-semibold text-[#111827]">Who: </span>
-              {matchInfo.who}
+              Inhouse Counsel, P.C. a national business law firm connected to
+              over 2,000 subject matter experts in business law
             </p>
           </div>
           <hr className="text-[#D1D1D1]" />
@@ -328,7 +324,7 @@ export function BusinessMatchedScreen({
               id="show-form-button"
               className="w-full bg-[#1F2937] hover:bg-[#111827] text-white font-medium py-3 px-4 rounded-full transition-colors text-sm"
             >
-              Get Business Consultation
+              Connect with Inhouse Counsel, P.C.
             </button>
           </div>
         </div>
