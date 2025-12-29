@@ -28,17 +28,6 @@ export function Home() {
     setModalWhyCopy(toolOutput?.structuredContent?.modal_why_copy);
     setModalNextStepsCopy(toolOutput?.structuredContent?.modal_next_steps_copy);
 
-    var a = {
-      match_category: "other",
-      match_status: "match_not_found",
-      content: null,
-      structuredContent: {
-        message:
-          "We appreciate your interest in our legal services. Currently, we serve only personal injury and business consultation cases in the USA. We still welcome you to submit your details and we will try to find a lawyer for you and reach out in 5 business days if we can find a matching lawyer",
-        context_id: "694bf786b0e645a244fc6528",
-      },
-    };
-
     dispatch(
       setMatchData({
         why_copy: String(

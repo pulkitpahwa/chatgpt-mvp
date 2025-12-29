@@ -12,33 +12,32 @@ import {
   setWidgetState,
 } from "../hooks/useToolCall";
 import { useAppSelector } from "../store/hooks";
-import MorganLogo from "../../public/mandm.png";
+import Imhoff from "../../public/imhoff.png";
 
 const matchConfig: MatchConfig = {
   logo: (
     <img
-      src={MorganLogo}
-      alt="Morgan & Morgan Logo"
+      src={Imhoff}
+      alt="Imhoff & Associate Logo"
       style={{ maxWidth: "50px", maxHeight: "31px" }}
     />
   ),
-  firmName: "Morgan & Morgan",
-  firmSubtitle:
-    "A national law firm of 1,000+ injury attorneys in all 50 states",
+  firmName: "Imhoff & Associates",
+  firmSubtitle: "A criminal defense firm with 800+ attorneys in all 50 states",
   matchText:
-    "Morgan & Morgan has experience with personal injury cases like yours.",
+    "Our network includes attorneys with experience in criminal defense cases like yours.",
   costText: "Free consultation",
   turnAroundText: "You'll receive a call within 24 hours to discuss your case.",
-  buttonText: "Share Chat with Morgan & Morgan",
-  formTitle: "Connect with Morgan & Morgan",
+  buttonText: "Share Chat with Imhoff & Associates",
+  formTitle: "Connect with Imhoff & Associates",
   formSubtitle:
     "Your chat summary will be shared along with the form submission",
-  submitButtonText: "Send",
-  termsUrl: "https://www.forthepeople.com/terms-of-use/",
-  privacyUrl: "https://www.forthepeople.com/privacy-policy/",
+  submitButtonText: "Submit",
+  termsUrl: "https://www.inhouse.ai/terms-of-service",
+  privacyUrl: "https://www.inhouse.ai/privacy-policy",
 };
 
-export function PersonalInjuryPage() {
+export function CriminalDefensePage() {
   const { isLoading, isWaitingForBackend } = useAppContext();
   const [success, setSuccess] = useState(false);
   const [showMatchedScreen, setShowMatchedScreen] = useState(false);
@@ -91,7 +90,7 @@ export function PersonalInjuryPage() {
       setWidgetState({
         consultationRequested: true,
         requestId,
-        partnerFirm: "morgan_morgan",
+        partnerFirm: "criminal",
       });
 
       // Switch to inline mode for success view
@@ -108,20 +107,16 @@ export function PersonalInjuryPage() {
   // Success state
   if (success) {
     return (
-      <SuccessScreen description="Morgan & Morgan will call you within 24 hours to discuss your case" />
+      <SuccessScreen description="A criminal defense attorney will call you within 24 hours to discuss your case" />
     );
   }
 
   // Show matched screen with form
   if (showMatchedScreen) {
-    const newConfig = {
-      ...matchConfig,
-      matchText: reduxMatchData?.why_copy || matchConfig.matchText,
-    };
     return (
       <div className="bg-white">
         <UnifiedMatchedScreen
-          config={newConfig}
+          config={matchConfig}
           onSubmit={handleSubmit}
           loading={loading}
           error={toolCallError ? new Error(toolCallError) : null}

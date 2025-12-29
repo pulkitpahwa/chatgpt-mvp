@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { TransitionScreen } from "../components/TransitionScreen";
-import { BusinessMatchedScreen } from "../components/BusinessMatchedScreen";
+import {
+  UnifiedMatchedScreen,
+  MatchConfig,
+} from "../components/UnifiedMatchedScreen";
 import { SuccessScreen } from "../components/SuccessScreen";
 import {
   useRequestConsultation,
@@ -8,6 +11,31 @@ import {
   setWidgetState,
 } from "../hooks/useToolCall";
 import { useAppSelector } from "../store/hooks";
+import InhouseLogo from "../../public/inhouse-mini.png";
+
+const matchConfig: MatchConfig = {
+  logo: (
+    <img
+      src={InhouseLogo}
+      alt="Inhouse Counsel Logo"
+      style={{ maxWidth: "40px", maxHeight: "40px" }}
+    />
+  ),
+  firmName: "Inhouse Counsel PC",
+  firmSubtitle: "A business law firm",
+  matchText:
+    "Inhouse Counsel PC has experience with business legal matters like yours.",
+  costText: "$99 for 30 minute consult",
+  turnAroundText:
+    "You'll receive an email within 24 hours to pay and schedule your call.",
+  buttonText: "Share Chat with Inhouse Counsel",
+  formTitle: "Connect with Inhouse Counsel",
+  formSubtitle:
+    "Your chat summary will be shared along with the form submission",
+  submitButtonText: "Submit",
+  termsUrl: "https://www.inhouse.ai/terms-of-service",
+  privacyUrl: "https://www.inhouse.ai/privacy-policy",
+};
 
 export function BusinessConsultationPage() {
   const [success, setSuccess] = useState(false);
@@ -29,6 +57,7 @@ export function BusinessConsultationPage() {
     name: string;
     email: string;
     phone: string;
+    notes: string;
   }) => {
     const args = {
       name: formData.name,
@@ -73,11 +102,16 @@ export function BusinessConsultationPage() {
     );
   }
 
-  // Show Business matched screen with form
+  // Show matched screen with form
   if (showMatchedScreen) {
+    const newConfig = {
+      ...matchConfig,
+      matchText: reduxMatchData?.why_copy || matchConfig.matchText,
+    };
     return (
       <div className="bg-white">
-        <BusinessMatchedScreen
+        <UnifiedMatchedScreen
+          config={newConfig}
           onSubmit={handleSubmit}
           loading={loading}
           error={toolCallError ? new Error(toolCallError) : null}

@@ -12,33 +12,32 @@ import {
   setWidgetState,
 } from "../hooks/useToolCall";
 import { useAppSelector } from "../store/hooks";
-import MorganLogo from "../../public/mandm.png";
+import OvertureLogo from "../../public/overture.png";
 
 const matchConfig: MatchConfig = {
   logo: (
     <img
-      src={MorganLogo}
-      alt="Morgan & Morgan Logo"
-      style={{ maxWidth: "50px", maxHeight: "31px" }}
+      src={OvertureLogo}
+      alt="Overture Logo"
+      style={{ maxWidth: "84px", maxHeight: "52px" }}
     />
   ),
-  firmName: "Morgan & Morgan",
-  firmSubtitle:
-    "A national law firm of 1,000+ injury attorneys in all 50 states",
+  firmName: "Overture",
+  firmSubtitle: "A referral network of 6,000 independent attorneys",
   matchText:
-    "Morgan & Morgan has experience with personal injury cases like yours.",
-  costText: "Free consultation",
+    "An independent attorney with relevant experience has been matched to your case.",
+  costText: "Consultation fees vary by attorney",
   turnAroundText: "You'll receive a call within 24 hours to discuss your case.",
-  buttonText: "Share Chat with Morgan & Morgan",
-  formTitle: "Connect with Morgan & Morgan",
+  buttonText: "Share Chat with Overture",
+  formTitle: "Connect with Overture",
   formSubtitle:
     "Your chat summary will be shared along with the form submission",
-  submitButtonText: "Send",
-  termsUrl: "https://www.forthepeople.com/terms-of-use/",
-  privacyUrl: "https://www.forthepeople.com/privacy-policy/",
+  submitButtonText: "Submit",
+  termsUrl: "https://www.inhouse.ai/terms-of-service",
+  privacyUrl: "https://www.inhouse.ai/privacy-policy",
 };
 
-export function PersonalInjuryPage() {
+export function IndependentAttorneysPage() {
   const { isLoading, isWaitingForBackend } = useAppContext();
   const [success, setSuccess] = useState(false);
   const [showMatchedScreen, setShowMatchedScreen] = useState(false);
@@ -91,7 +90,7 @@ export function PersonalInjuryPage() {
       setWidgetState({
         consultationRequested: true,
         requestId,
-        partnerFirm: "morgan_morgan",
+        partnerFirm: "other",
       });
 
       // Switch to inline mode for success view
@@ -108,7 +107,7 @@ export function PersonalInjuryPage() {
   // Success state
   if (success) {
     return (
-      <SuccessScreen description="Morgan & Morgan will call you within 24 hours to discuss your case" />
+      <SuccessScreen description="An independent attorney will call you within 24 hours to discuss your case" />
     );
   }
 

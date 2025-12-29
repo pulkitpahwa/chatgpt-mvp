@@ -35,7 +35,6 @@ export function NotMatchedScreen({
   error = null,
   matchInfo,
 }: NotMatchedScreenProps) {
-  const details = { ...defaultMatchInfo };
   return (
     <MatchedScreen
       onSubmit={onSubmit}

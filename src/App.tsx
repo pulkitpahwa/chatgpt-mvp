@@ -1,13 +1,15 @@
-import { HashRouter, Routes, Route } from 'react-router-dom';
-import { AppsSDKUIProvider } from '@openai/apps-sdk-ui/components/AppsSDKUIProvider';
-import { Link } from 'react-router-dom';
-import { AppProvider } from './context/AppContext';
-import { WidgetContainer } from './components/WidgetContainer';
-import { Home } from './pages/Home';
-import { PersonalInjuryPage } from './pages/PersonalInjuryPage';
-import { BusinessConsultationPage } from './pages/BusinessConsultationPage';
-import { NotAvailablePage } from './pages/NotAvailablePage';
-import { UnsupportedLocationPage } from './pages/UnsupportedLocationPage';
+import { HashRouter, Routes, Route } from "react-router-dom";
+import { AppsSDKUIProvider } from "@openai/apps-sdk-ui/components/AppsSDKUIProvider";
+import { Link } from "react-router-dom";
+import { AppProvider } from "./context/AppContext";
+import { WidgetContainer } from "./components/WidgetContainer";
+import { Home } from "./pages/Home";
+import { PersonalInjuryPage } from "./pages/PersonalInjuryPage";
+import { BusinessConsultationPage } from "./pages/BusinessConsultationPage";
+import { NotAvailablePage } from "./pages/NotAvailablePage";
+import { UnsupportedLocationPage } from "./pages/UnsupportedLocationPage";
+import { CriminalDefensePage } from "./pages/CriminalDefensePage";
+import { IndependentAttorneysPage } from "./pages/IndependentAttorneysPage";
 
 // Note: Authentication is handled by ChatGPT via OAuth flow with the MCP server.
 // When tools require authentication, ChatGPT prompts the user to sign in.
@@ -27,9 +29,23 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/personal-injury" element={<PersonalInjuryPage />} />
-              <Route path="/business-consultation" element={<BusinessConsultationPage />} />
+              <Route
+                path="/business-consultation"
+                element={<BusinessConsultationPage />}
+              />
+              <Route
+                path="/criminal-defense"
+                element={<CriminalDefensePage />}
+              />
+              <Route
+                path="/independent-attorneys"
+                element={<IndependentAttorneysPage />}
+              />
               <Route path="/not-available" element={<NotAvailablePage />} />
-              <Route path="/unsupported-location" element={<UnsupportedLocationPage />} />
+              <Route
+                path="/unsupported-location"
+                element={<UnsupportedLocationPage />}
+              />
             </Routes>
           </WidgetContainer>
         </AppProvider>
