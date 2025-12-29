@@ -62,8 +62,10 @@ export function Home() {
       navigate("/personal-injury", { replace: true });
     } else if (intent === "business_consultation") {
       navigate("/business-consultation", { replace: true });
+    } else if (intent === "criminal_defense") {
+      navigate("/criminal-defense", { replace: true });
     } else if (intent === "other") {
-      navigate("/not-available", { replace: true });
+      navigate("/independent-attorneys", { replace: true });
     } else if (intent === "unsupported_location") {
       navigate("/unsupported-location", { replace: true });
     }
