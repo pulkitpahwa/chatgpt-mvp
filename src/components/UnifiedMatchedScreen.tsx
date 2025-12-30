@@ -41,6 +41,7 @@ export interface MatchConfig {
   submitButtonText: string;
   termsUrl: string;
   privacyUrl: string;
+  formSubmitMessage: any;
 }
 
 export interface UnifiedMatchedScreenProps {
@@ -70,9 +71,9 @@ export function UnifiedMatchedScreen({
   const reduxMatchData = useAppSelector((state) => state.match);
 
   // Use Redux state if available, otherwise fall back to config defaults
-  const matchText = reduxMatchData.message_copy || config.matchText;
-  const costText = reduxMatchData.why_copy || config.costText;
-  const turnAroundText = reduxMatchData.nextsteps_copy || config.turnAroundText;
+  const matchText = reduxMatchData.why_copy || config.matchText;
+  const costText = config.costText;
+  const turnAroundText = config.turnAroundText;
 
   const validateForm = (): boolean => {
     const errors: FormErrors = {};
@@ -140,6 +141,7 @@ export function UnifiedMatchedScreen({
                 </label>
                 <Input
                   value={formData.name}
+                  disabled={loading}
                   className="h-[48px] px-[16px] border-[1px] border-gray-100 focus:border-red-500 focus:border-[1px] focus:ring-0 focus:outline-none transition-colors text-[#000] placeholder-gray-400"
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
@@ -158,6 +160,7 @@ export function UnifiedMatchedScreen({
                 <Input
                   className="h-[48px] px-[16px] border-[1px] border-gray-100 focus:border-red-500 focus:border-[1px] focus:ring-0 focus:outline-none transition-colors text-[#000] placeholder-gray-400"
                   type="tel"
+                  disabled={loading}
                   value={formData.phone}
                   onChange={(e) =>
                     setFormData({ ...formData, phone: e.target.value })
@@ -178,6 +181,7 @@ export function UnifiedMatchedScreen({
                 <Input
                   className="h-[48px] px-[16px] border-[1px] border-gray-100 focus:border-red-500 focus:border-[1px] focus:ring-0 focus:outline-none transition-colors text-[#000] placeholder-gray-400"
                   type="email"
+                  disabled={loading}
                   value={formData.email}
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
@@ -226,12 +230,7 @@ export function UnifiedMatchedScreen({
                   />
                   <div className="md:flex md:flex-col gap-1 md:gap-2">
                     <span className="text-black text-dark">
-                      I hereby express my consent to receive automated
-                      communications including calls, texts, emails, and/or
-                      prerecorded messages.{" "}
-                    </span>
-                    <span className="text-black text-dark">
-                      By submitting this form, you agree to our{" "}
+                      I consent to your{" "}
                       <a
                         href={config.termsUrl}
                         target="_blank"
@@ -247,6 +246,8 @@ export function UnifiedMatchedScreen({
                       >
                         Privacy Policy
                       </a>
+                      , and agree to receive automated communications including
+                      calls, texts, emails, and/or prerecorded messages.{" "}
                     </span>
                   </div>
                 </div>
@@ -262,10 +263,16 @@ export function UnifiedMatchedScreen({
                     : ""
                 }`}
             >
-              {config.submitButtonText}{" "}
-              <span>
-                <ArrowRightIcon />
-              </span>
+              {!loading ? (
+                <>
+                  {config.submitButtonText}
+                  <span>
+                    <ArrowRightIcon />
+                  </span>
+                </>
+              ) : (
+                <div className="w-5 h-5 border-2 border-white border-t-[#1B2B48] rounded-full animate-spin"></div>
+              )}
             </button>
           </div>
         </div>
@@ -276,18 +283,18 @@ export function UnifiedMatchedScreen({
   // Main Card View
   return (
     <div className="overflow-y-auto p-2">
-      <div className="bg-background-secondary rounded-xl shadow-sm border border-[#E5E7EB] shadow-md">
+      <div className="bg-background-secondary rounded-xl shadow-sm  shadow-md">
         {/* Header with logo and firm info */}
-        <div className="bg-[#E3EFE3] rounded-t-xl px-4 py-4 relative">
+        <div className="bg-[#E3EFE3] rounded-tl-xl rounded-tr-[20px] px-4 relative">
           {/* Matched badge */}
-          <div className="absolute top-3 right-3">
-            <span className="px-3 py-1 text-sm font-medium text-white rounded-full bg-gradient-to-r from-[#F97316] to-[#EC4899]">
+          <div className="absolute top-[-3px] right-[0px]">
+            <span className="px-[16px] py-[4px] text-[12px] font-[600] text-white rounded-tl-0 rounded-tr-full rounded-bl-full bg-gradient-to-r from-[#A843AA] to-[#DF8A64] h-[26px]">
               Matched
             </span>
           </div>
 
           {/* Logo and firm info */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 py-2">
             {config.logo && <div className="flex-shrink-0">{config.logo}</div>}
             <div>
               <h2 className="text-[#111827] font-semibold text-lg">
@@ -299,7 +306,7 @@ export function UnifiedMatchedScreen({
         </div>
 
         {/* Content */}
-        <div className="p-4 space-y-4">
+        <div className="p-4 space-y-4 border border border-[#E5E7EB] rounded-b-xl">
           {/* Match */}
           <div className="flex items-start gap-3">
             <div className="flex-shrink-0 mt-0.5 text-[#027A48]">

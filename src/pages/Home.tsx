@@ -19,11 +19,8 @@ export function Home() {
 
   // Check for intent from backend and auto-route if specific intent is detected
   React.useEffect(() => {
-    const intent =
-      toolOutput?.match_category ||
-      toolOutput?.structuredContent?.match_category;
-    const matchStatus =
-      toolOutput?.structuredContent?.match_status || toolOutput?.match_status;
+    const intent = toolOutput?.match_category;
+    const matchStatus = toolOutput?.match_status;
     setMessage(toolOutput?.structuredContent?.message);
     setModalWhyCopy(toolOutput?.structuredContent?.modal_why_copy);
     setModalNextStepsCopy(toolOutput?.structuredContent?.modal_next_steps_copy);
@@ -41,9 +38,9 @@ export function Home() {
           toolOutput?.structuredContent?.modal_next_steps_copy ?? ""
         ),
         match_status:
-          (toolOutput?.structuredContent?.match_status as
+          (toolOutput?.match_status as
             | "pending"
-            | "matched"
+            | "match_found"
             | "not_matched"
             | "error"
             | null) ?? "pending",
@@ -62,7 +59,7 @@ export function Home() {
       navigate("/personal-injury", { replace: true });
     } else if (intent === "business_consultation") {
       navigate("/business-consultation", { replace: true });
-    } else if (intent === "criminal_defense") {
+    } else if (intent === "criminal") {
       navigate("/criminal-defense", { replace: true });
     } else if (intent === "other") {
       navigate("/independent-attorneys", { replace: true });

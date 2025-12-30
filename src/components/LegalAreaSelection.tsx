@@ -1,5 +1,7 @@
 // import { useNavigate } from "react-router-dom";
 
+import { useNavigate } from "react-router-dom";
+
 // interface LegalOption {
 //   id: string;
 //   title: string;
@@ -36,7 +38,8 @@
 // ];
 
 export function LegalAreaSelection() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  navigate("/independent-attorneys");
 
   return (
     <div className=" overflow-y-auto p-4 bg-white">
@@ -45,9 +48,9 @@ export function LegalAreaSelection() {
       questions as mentioned in the following message.
       <br />
       <br />
-      Once you have provided the necessary information, tag @inhouselegal
-      seeking legal assistance, and we will promptly connect you with a
-      qualified attorney who can help address your needs.
+      Once you have provided the necessary information, tag @inhouse seeking
+      legal assistance, and we will promptly connect you with a qualified
+      attorney who can help address your needs.
       {/* <div className="bg-background-secondary rounded-xl p-6 shadow-sm border-[0.5px] border-[#0D0D0D26]">
         <div className="mb-6">
           <h1 className="text-lg font-semibold text-foreground-primary mb-2">

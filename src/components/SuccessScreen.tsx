@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const CheckIcon = () => (
   <svg
@@ -21,7 +21,7 @@ export interface SuccessScreenProps {
 }
 
 export function SuccessScreen({ description }: SuccessScreenProps) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   return (
     <div className="flex flex-col items-center justify-center px-6 py-12 bg-white min-h-[300px]">
@@ -29,23 +29,24 @@ export function SuccessScreen({ description }: SuccessScreenProps) {
         <CheckIcon />
       </div>
 
-      <h2 className="text-xl font-semibold text-gray-900 mb-2">Thank you!</h2>
+      <h2 className="text-xl font-semibold text-black mb-2">Case Submitted</h2>
 
       <p className="text-gray-600 text-center mb-8 max-w-xs">{description}</p>
 
       <div className="w-full max-w-xs space-y-3">
-        <button
+        {/* <button
           onClick={() => navigate("/")}
           className="w-full py-3 px-4 bg-[#1a1a2e] text-white font-medium rounded-full hover:bg-[#2a2a3e] transition-colors"
         >
           Got It
-        </button>
+        </button> */}
 
         <button
           onClick={() => window.open("https://www.inhouse.ai", "_blank")}
-          className="w-full py-3 px-4 bg-white text-gray-700 font-medium rounded-full border border-gray-300 hover:bg-gray-50 transition-colors"
+          className="w-full text-white mt-2 rounded-[999px] w-full bg-[#1B2B48] px-[24px] py-[12px]
+                hover:bg-[#111827] flex items-center justify-center gap-2 transition-colors"
         >
-          Explore Inhouse.ai
+          Explore Inhouse
         </button>
       </div>
     </div>

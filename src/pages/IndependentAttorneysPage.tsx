@@ -14,6 +14,9 @@ import {
 import { useAppSelector } from "../store/hooks";
 import OvertureLogo from "../../public/overture.png";
 
+const submitMessage = (email: string) =>
+  `Overture will email you at ${email} within 24 hours to discuss your case`;
+
 const matchConfig: MatchConfig = {
   logo: (
     <img
@@ -28,13 +31,14 @@ const matchConfig: MatchConfig = {
     "An independent attorney with relevant experience has been matched to your case.",
   costText: "Consultation fees vary by attorney",
   turnAroundText: "You'll receive a call within 24 hours to discuss your case.",
-  buttonText: "Share Chat with Overture",
+  buttonText: "Connect with Overture",
   formTitle: "Connect with Overture",
-  formSubtitle:
-    "Your chat summary will be shared along with the form submission",
+  formSubtitle: "We’ll share your chat summary and contact",
+
   submitButtonText: "Submit",
   termsUrl: "https://www.inhouse.ai/terms-of-service",
   privacyUrl: "https://www.inhouse.ai/privacy-policy",
+  formSubmitMessage: submitMessage,
 };
 
 export function IndependentAttorneysPage() {
@@ -42,6 +46,7 @@ export function IndependentAttorneysPage() {
   const [success, setSuccess] = useState(false);
   const [showMatchedScreen, setShowMatchedScreen] = useState(false);
   const [toolCallError, setToolCallError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const { loading, callTool } = useRequestConsultation();
   const reduxMatchData = useAppSelector((state) => state.match);
@@ -74,6 +79,7 @@ export function IndependentAttorneysPage() {
       phone: formData.phone,
       context_id: reduxMatchData?.gpt_context_id || undefined,
     };
+    setSuccessMessage(submitMessage(formData.email));
 
     const result = await callTool(args);
 
@@ -106,21 +112,15 @@ export function IndependentAttorneysPage() {
 
   // Success state
   if (success) {
-    return (
-      <SuccessScreen description="An independent attorney will call you within 24 hours to discuss your case" />
-    );
+    return <SuccessScreen description={successMessage} />;
   }
 
   // Show matched screen with form
   if (showMatchedScreen) {
-    const newConfig = {
-      ...matchConfig,
-      matchText: reduxMatchData?.why_copy || matchConfig.matchText,
-    };
     return (
       <div className="bg-white">
         <UnifiedMatchedScreen
-          config={newConfig}
+          config={matchConfig}
           onSubmit={handleSubmit}
           loading={loading}
           error={toolCallError ? new Error(toolCallError) : null}

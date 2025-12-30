@@ -14,6 +14,9 @@ import {
 import { useAppSelector } from "../store/hooks";
 import MorganLogo from "../../public/mandm.png";
 
+const submitMessage = (email: string) =>
+  `Morgan & Morgan will email you at ${email} within 24 hours to discuss your case`;
+
 const matchConfig: MatchConfig = {
   logo: (
     <img
@@ -29,13 +32,13 @@ const matchConfig: MatchConfig = {
     "Morgan & Morgan has experience with personal injury cases like yours.",
   costText: "Free consultation",
   turnAroundText: "You'll receive a call within 24 hours to discuss your case.",
-  buttonText: "Share Chat with Morgan & Morgan",
+  buttonText: "Connect with Morgan & Morgan",
   formTitle: "Connect with Morgan & Morgan",
-  formSubtitle:
-    "Your chat summary will be shared along with the form submission",
+  formSubtitle: "We’ll share your chat summary and contact",
   submitButtonText: "Send",
   termsUrl: "https://www.forthepeople.com/terms-of-use/",
   privacyUrl: "https://www.forthepeople.com/privacy-policy/",
+  formSubmitMessage: submitMessage,
 };
 
 export function PersonalInjuryPage() {
@@ -43,6 +46,7 @@ export function PersonalInjuryPage() {
   const [success, setSuccess] = useState(false);
   const [showMatchedScreen, setShowMatchedScreen] = useState(false);
   const [toolCallError, setToolCallError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const { loading, callTool } = useRequestConsultation();
   const reduxMatchData = useAppSelector((state) => state.match);
@@ -76,6 +80,7 @@ export function PersonalInjuryPage() {
       context_id: reduxMatchData?.gpt_context_id || undefined,
     };
 
+    setSuccessMessage(submitMessage(formData.email));
     const result = await callTool(args);
 
     // Check for successful response using structuredContent
@@ -107,21 +112,15 @@ export function PersonalInjuryPage() {
 
   // Success state
   if (success) {
-    return (
-      <SuccessScreen description="Morgan & Morgan will call you within 24 hours to discuss your case" />
-    );
+    return <SuccessScreen description={successMessage} />;
   }
 
   // Show matched screen with form
   if (showMatchedScreen) {
-    const newConfig = {
-      ...matchConfig,
-      matchText: reduxMatchData?.why_copy || matchConfig.matchText,
-    };
     return (
       <div className="bg-white">
         <UnifiedMatchedScreen
-          config={newConfig}
+          config={matchConfig}
           onSubmit={handleSubmit}
           loading={loading}
           error={toolCallError ? new Error(toolCallError) : null}

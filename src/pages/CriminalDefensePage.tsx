@@ -14,11 +14,14 @@ import {
 import { useAppSelector } from "../store/hooks";
 import Imhoff from "../../public/imhoff.png";
 
+const submitMessage = (email: string) =>
+  `Imhoff & Associates will email you at ${email} within 48 hours to discuss your case`;
+
 const matchConfig: MatchConfig = {
   logo: (
     <img
       src={Imhoff}
-      alt="Imhoff & Associate Logo"
+      alt="Imhoff & Associates Logo"
       style={{ maxWidth: "50px", maxHeight: "31px" }}
     />
   ),
@@ -28,13 +31,13 @@ const matchConfig: MatchConfig = {
     "Our network includes attorneys with experience in criminal defense cases like yours.",
   costText: "Free consultation",
   turnAroundText: "You'll receive a call within 24 hours to discuss your case.",
-  buttonText: "Share Chat with Imhoff & Associates",
+  buttonText: "Connect with Imhoff & Associates",
   formTitle: "Connect with Imhoff & Associates",
-  formSubtitle:
-    "Your chat summary will be shared along with the form submission",
+  formSubtitle: "We’ll share your chat summary and contact",
   submitButtonText: "Submit",
   termsUrl: "https://www.inhouse.ai/terms-of-service",
   privacyUrl: "https://www.inhouse.ai/privacy-policy",
+  formSubmitMessage: submitMessage,
 };
 
 export function CriminalDefensePage() {
@@ -42,6 +45,7 @@ export function CriminalDefensePage() {
   const [success, setSuccess] = useState(false);
   const [showMatchedScreen, setShowMatchedScreen] = useState(false);
   const [toolCallError, setToolCallError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const { loading, callTool } = useRequestConsultation();
   const reduxMatchData = useAppSelector((state) => state.match);
@@ -74,6 +78,7 @@ export function CriminalDefensePage() {
       phone: formData.phone,
       context_id: reduxMatchData?.gpt_context_id || undefined,
     };
+    setSuccessMessage(submitMessage(formData.email));
 
     const result = await callTool(args);
 
@@ -106,9 +111,7 @@ export function CriminalDefensePage() {
 
   // Success state
   if (success) {
-    return (
-      <SuccessScreen description="A criminal defense attorney will call you within 24 hours to discuss your case" />
-    );
+    return <SuccessScreen description={successMessage} />;
   }
 
   // Show matched screen with form

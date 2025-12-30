@@ -5,7 +5,7 @@ export interface MatchState {
   message_copy: string;
   nextsteps_copy: string;
   gpt_context_id: string;
-  match_status: "pending" | "matched" | "not_matched" | "error" | null;
+  match_status: "pending" | "match_found" | "not_matched" | "error" | null;
 }
 
 const initialState: MatchState = {

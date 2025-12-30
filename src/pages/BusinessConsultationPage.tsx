@@ -13,6 +13,9 @@ import {
 import { useAppSelector } from "../store/hooks";
 import InhouseLogo from "../../public/inhouse-mini.png";
 
+const submitMessage = (email: string) =>
+  `Inhouse will email you at ${email} within 2-3 business days to discuss your case`;
+
 const matchConfig: MatchConfig = {
   logo: (
     <img
@@ -28,13 +31,13 @@ const matchConfig: MatchConfig = {
   costText: "$99 for 30 minute consult",
   turnAroundText:
     "You'll receive an email within 24 hours to pay and schedule your call.",
-  buttonText: "Share Chat with Inhouse Counsel",
+  buttonText: "Connect with Inhouse Counsel PC",
   formTitle: "Connect with Inhouse Counsel",
-  formSubtitle:
-    "Your chat summary will be shared along with the form submission",
+  formSubtitle: "We’ll share your chat summary and contact",
   submitButtonText: "Submit",
   termsUrl: "https://www.inhouse.ai/terms-of-service",
   privacyUrl: "https://www.inhouse.ai/privacy-policy",
+  formSubmitMessage: submitMessage,
 };
 
 export function BusinessConsultationPage() {
@@ -45,6 +48,7 @@ export function BusinessConsultationPage() {
   const reduxMatchData = useAppSelector((state) => state.match);
 
   const { loading, callTool } = useRequestConsultation();
+  const [successMessage, setSuccessMessage] = useState("");
 
   // Show the matched screen immediately for business consultation
   useEffect(() => {
@@ -65,7 +69,7 @@ export function BusinessConsultationPage() {
       phone: formData.phone,
       context_id: reduxMatchData?.gpt_context_id || undefined,
     };
-
+    setSuccessMessage(submitMessage(formData.email));
     const result = await callTool(args);
 
     // Check for successful response using structuredContent
@@ -97,21 +101,15 @@ export function BusinessConsultationPage() {
 
   // Success state
   if (success) {
-    return (
-      <SuccessScreen description="A business attorney will call you within 24 hours to discuss your matter" />
-    );
+    return <SuccessScreen description={successMessage} />;
   }
 
   // Show matched screen with form
   if (showMatchedScreen) {
-    const newConfig = {
-      ...matchConfig,
-      matchText: reduxMatchData?.why_copy || matchConfig.matchText,
-    };
     return (
       <div className="bg-white">
         <UnifiedMatchedScreen
-          config={newConfig}
+          config={matchConfig}
           onSubmit={handleSubmit}
           loading={loading}
           error={toolCallError ? new Error(toolCallError) : null}
