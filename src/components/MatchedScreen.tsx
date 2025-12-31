@@ -140,6 +140,10 @@ export function MatchedScreen({
 
   // Form View
   if (showForm) {
+    if (typeof window.openai?.notifyIntrinsicHeight === "function") {
+      window.openai.notifyIntrinsicHeight();
+    }
+
     return (
       <div className="p-4 overflow-y-auto">
         <div className="bg-background-secondary rounded-xl shadow-sm flex flex-col gap-3">

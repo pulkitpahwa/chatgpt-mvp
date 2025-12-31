@@ -62,11 +62,13 @@ export function BusinessConsultationPage() {
     email: string;
     phone: string;
     notes: string;
+    state: string;
   }) => {
     const args = {
       name: formData.name,
       email: formData.email,
       phone: formData.phone,
+      state: formData.state,
       context_id: reduxMatchData?.gpt_context_id || undefined,
     };
     setSuccessMessage(submitMessage(formData.email));

@@ -1,6 +1,6 @@
-import React from 'react';
-import { useAppContext } from '../context/AppContext';
-import { Alert } from '@openai/apps-sdk-ui/components/Alert';
+import React from "react";
+import { useAppContext } from "../context/AppContext";
+import { Alert } from "@openai/apps-sdk-ui/components/Alert";
 
 interface WidgetContainerProps {
   children: React.ReactNode;
@@ -13,18 +13,21 @@ interface WidgetContainerProps {
  * - Fullscreen: Full viewport, scrollable
  * - PiP: Floating window style
  */
-export function WidgetContainer({ children, className = '' }: WidgetContainerProps) {
+export function WidgetContainer({
+  children,
+  className = "",
+}: WidgetContainerProps) {
   const { displayMode } = useAppContext();
 
   const modeStyles = {
-    inline: 'max-h-screen overflow-hidden',
-    fullscreen: 'min-h-screen p-4',
-    pip: 'max-w-sm rounded-xl shadow-lg',
+    inline: "",
+    fullscreen: "p-4",
+    pip: "max-w-sm rounded-xl shadow-lg",
   };
 
   return (
     <div
-      className={`bg-background-primary ${modeStyles[displayMode]} ${className}`}
+      className={`bg-background-primary flex flex-col justify-center overflow-y-scroll ${modeStyles[displayMode]} ${className}`}
     >
       {children}
     </div>
@@ -32,21 +35,19 @@ export function WidgetContainer({ children, className = '' }: WidgetContainerPro
 }
 
 interface StatusBannerProps {
-  type: 'success' | 'error' | 'warning' | 'info';
+  type: "success" | "error" | "warning" | "info";
   message: string;
   onDismiss?: () => void;
 }
 
 export function StatusBanner({ type, message }: StatusBannerProps) {
   // Map our types to Alert color values
-  const colorMap: Record<string, 'success' | 'danger' | 'warning' | 'info'> = {
-    success: 'success',
-    error: 'danger',
-    warning: 'warning',
-    info: 'info',
+  const colorMap: Record<string, "success" | "danger" | "warning" | "info"> = {
+    success: "success",
+    error: "danger",
+    warning: "warning",
+    info: "info",
   };
 
-  return (
-    <Alert color={colorMap[type] || 'info'} description={message} />
-  );
+  return <Alert color={colorMap[type] || "info"} description={message} />;
 }

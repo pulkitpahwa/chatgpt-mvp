@@ -131,6 +131,7 @@ export interface OpenAiApi extends OpenAiGlobals {
   // Display
   requestDisplayMode: (options: RequestDisplayModeOptions) => Promise<boolean>;
   requestClose: () => void;
+  notifyIntrinsicHeight: () => void;
 
   // State
   setWidgetState: (state: WidgetState) => void;

@@ -22,6 +22,7 @@ export interface SuccessScreenProps {
 
 export function SuccessScreen({ description }: SuccessScreenProps) {
   // const navigate = useNavigate();
+  window.openai?.notifyIntrinsicHeight?.();
 
   return (
     <div className="flex flex-col items-center justify-center px-6 py-12 bg-white min-h-[300px]">

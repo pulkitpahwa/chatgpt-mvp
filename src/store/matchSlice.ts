@@ -6,6 +6,7 @@ export interface MatchState {
   nextsteps_copy: string;
   gpt_context_id: string;
   match_status: "pending" | "match_found" | "not_matched" | "error" | null;
+  state: string;
 }
 
 const initialState: MatchState = {
@@ -14,6 +15,7 @@ const initialState: MatchState = {
   nextsteps_copy: "",
   gpt_context_id: "",
   match_status: null,
+  state: "",
 };
 
 const matchSlice = createSlice({
@@ -31,6 +33,9 @@ const matchSlice = createSlice({
     },
     setGptContextId: (state, action: PayloadAction<string>) => {
       state.gpt_context_id = action.payload;
+    },
+    setState: (state, action: PayloadAction<string>) => {
+      state.state = action.payload;
     },
     setMatchStatus: (
       state,
@@ -50,6 +55,7 @@ export const {
   setMessageCopy,
   setNextStepsCopy,
   setGptContextId,
+  setState,
   setMatchStatus,
   setMatchData,
   resetMatch,

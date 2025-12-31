@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@openai/apps-sdk-ui/components/Input";
 import { Alert } from "@openai/apps-sdk-ui/components/Alert";
 import {
@@ -16,6 +16,7 @@ export interface FormData {
   email: string;
   phone: string;
   notes: string;
+  state: string;
 }
 
 interface FormErrors {
@@ -58,17 +59,26 @@ export function UnifiedMatchedScreen({
   error = null,
 }: UnifiedMatchedScreenProps) {
   const [showForm, setShowForm] = useState(false);
+
+  // Get match data from Redux store for dynamic content
+  const reduxMatchData = useAppSelector((state) => state.match);
+
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     phone: "",
     notes: "",
+    state: reduxMatchData.state || "",
   });
   const [formErrors, setFormErrors] = useState<FormErrors>({});
   const [consentChecked, setConsentChecked] = useState(false);
 
-  // Get match data from Redux store for dynamic content
-  const reduxMatchData = useAppSelector((state) => state.match);
+  // Sync state field from Redux when it updates
+  useEffect(() => {
+    if (reduxMatchData.state) {
+      setFormData((prev) => ({ ...prev, state: reduxMatchData.state }));
+    }
+  }, [reduxMatchData.state]);
 
   // Use Redux state if available, otherwise fall back to config defaults
   const matchText = reduxMatchData.why_copy || config.matchText;
@@ -107,8 +117,9 @@ export function UnifiedMatchedScreen({
 
   // Form View
   if (showForm) {
+    window.openai?.notifyIntrinsicHeight?.();
     return (
-      <div className="p-4 overflow-y-auto">
+      <div className="p-4 overflow-y-auto sm:h-[550px] md:h-[400px]">
         <div className="bg-background-secondary rounded-xl shadow-sm flex flex-col gap-3">
           {/* Back button and title */}
           <div className="flex flex-col">
@@ -134,7 +145,7 @@ export function UnifiedMatchedScreen({
 
           {/* Form */}
           <div className="flex gap-2 flex-col">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               <div>
                 <label className="block text-sm font-medium text-foreground-primary mb-1 text-dark text-black">
                   Full Name <span className="text-red-500">*</span>
@@ -194,6 +205,18 @@ export function UnifiedMatchedScreen({
                     {formErrors.email}
                   </p>
                 )}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-dark text-black mb-1">
+                  State
+                </label>
+                <Input
+                  className="h-[48px] px-[16px] border-[1px] border-gray-100 focus:border-red-500 focus:border-[1px] focus:ring-0 focus:outline-none transition-colors text-[#000] placeholder-gray-400 bg-gray-50"
+                  type="text"
+                  disabled={true}
+                  value={formData.state}
+                  placeholder="State"
+                />
               </div>
             </div>
 
@@ -282,7 +305,7 @@ export function UnifiedMatchedScreen({
 
   // Main Card View
   return (
-    <div className="overflow-y-auto p-2">
+    <div className="overflow-y-auto p-2 sm:h-[450px] md:h-[350px]">
       <div className="bg-background-secondary rounded-xl shadow-sm  shadow-md">
         {/* Header with logo and firm info */}
         <div className="bg-[#E3EFE3] rounded-tl-xl rounded-tr-[20px] px-4 relative">

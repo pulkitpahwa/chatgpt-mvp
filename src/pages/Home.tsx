@@ -44,6 +44,7 @@ export function Home() {
             | "not_matched"
             | "error"
             | null) ?? "pending",
+        state: String(toolOutput?.structuredContent?.state ?? ""),
       })
     );
 

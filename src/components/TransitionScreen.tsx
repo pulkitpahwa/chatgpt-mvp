@@ -40,9 +40,10 @@ export function TransitionScreen({
   }, [currentIndex, message, rotatingMessages.length, intervalMs]);
 
   const displayMessage = message || rotatingMessages[currentIndex];
+  window.openai?.notifyIntrinsicHeight?.();
 
   return (
-    <div className="flex flex-col items-center justify-center p-4 bg-white rounded-lg gap-4">
+    <div className="flex flex-col items-center justify-center p-4 bg-white rounded-lg gap-4 h-[450px]">
       <img src={INHOUSE_LOGO} alt="Inhouse Logo" className="w-[50px]" />
 
       <p className="text-foreground-secondary animate-fade-in flex flex-row gap-4">

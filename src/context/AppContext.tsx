@@ -96,6 +96,7 @@ export function AppProvider({ children }: AppProviderProps) {
         openExternal: () => {},
         uploadFile: async () => ({ fileId: "mock-file-id" }),
         getFileDownloadUrl: async () => ({ url: "", expiresAt: "" }),
+        notifyIntrinsicHeight: () => {},
       };
       // Dispatch event so hooks pick up the change
       window.dispatchEvent(new Event("openai:set_globals"));
@@ -126,6 +127,13 @@ export function AppProvider({ children }: AppProviderProps) {
       document.body.classList.add("widget-fullscreen");
     }
   }, [displayMode]);
+
+  // Notify host to use intrinsic height
+  useEffect(() => {
+    if (typeof window.openai?.notifyIntrinsicHeight === "function") {
+      window.openai.notifyIntrinsicHeight();
+    }
+  }, []);
 
   const value: AppContextValue = {
     theme,
