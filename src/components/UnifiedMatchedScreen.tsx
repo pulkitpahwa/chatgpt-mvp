@@ -153,7 +153,7 @@ export function UnifiedMatchedScreen({
                 <Input
                   value={formData.name}
                   disabled={loading}
-                  className="h-[48px] px-[16px] border-[1px] border-gray-100 focus:border-red-500 focus:border-[1px] focus:ring-0 focus:outline-none transition-colors text-[#000] placeholder-gray-400"
+                  className="h-[48px] px-[16px] border-[1px] border-gray-100 focus:border-gray-500 focus:border-[1px] focus:ring-0 focus:outline-none transition-colors text-[#000] placeholder-gray-400"
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
@@ -169,7 +169,7 @@ export function UnifiedMatchedScreen({
                   Phone Number <span className="text-red-500">*</span>
                 </label>
                 <Input
-                  className="h-[48px] px-[16px] border-[1px] border-gray-100 focus:border-red-500 focus:border-[1px] focus:ring-0 focus:outline-none transition-colors text-[#000] placeholder-gray-400"
+                  className="h-[48px] px-[16px] border-[1px] border-gray-100 focus:border-gray-500 focus:border-[1px] focus:ring-0 focus:outline-none transition-colors text-[#000] placeholder-gray-400"
                   type="tel"
                   disabled={loading}
                   value={formData.phone}
@@ -190,7 +190,7 @@ export function UnifiedMatchedScreen({
                   Email Address <span className="text-red-500">*</span>
                 </label>
                 <Input
-                  className="h-[48px] px-[16px] border-[1px] border-gray-100 focus:border-red-500 focus:border-[1px] focus:ring-0 focus:outline-none transition-colors text-[#000] placeholder-gray-400"
+                  className="h-[48px] px-[16px] border-[1px] border-gray-100 focus:border-gray-500 focus:border-[1px] focus:ring-0 focus:outline-none transition-colors text-[#000] placeholder-gray-400"
                   type="email"
                   disabled={loading}
                   value={formData.email}
@@ -210,13 +210,69 @@ export function UnifiedMatchedScreen({
                 <label className="block text-sm font-medium text-dark text-black mb-1">
                   State
                 </label>
-                <Input
-                  className="h-[48px] px-[16px] border-[1px] border-gray-100 focus:border-red-500 focus:border-[1px] focus:ring-0 focus:outline-none transition-colors text-[#000] placeholder-gray-400 bg-gray-50"
-                  type="text"
-                  disabled={true}
+                <select
+                  className="w-full h-[48px] px-[16px] border-[1px] border-gray-150 rounded-lg focus:border-gray-500 focus:ring-0 focus:outline-none transition-colors text-[#000] bg-white"
                   value={formData.state}
-                  placeholder="State"
-                />
+                  disabled={loading}
+                  onChange={(e) =>
+                    setFormData({ ...formData, state: e.target.value })
+                  }
+                >
+                  <option value="">Select State</option>
+                  <option value="Alabama">Alabama</option>
+                  <option value="Alaska">Alaska</option>
+                  <option value="Arizona">Arizona</option>
+                  <option value="Arkansas">Arkansas</option>
+                  <option value="California">California</option>
+                  <option value="Colorado">Colorado</option>
+                  <option value="Connecticut">Connecticut</option>
+                  <option value="Delaware">Delaware</option>
+                  <option value="Florida">Florida</option>
+                  <option value="Georgia">Georgia</option>
+                  <option value="Hawaii">Hawaii</option>
+                  <option value="Idaho">Idaho</option>
+                  <option value="Illinois">Illinois</option>
+                  <option value="Indiana">Indiana</option>
+                  <option value="Iowa">Iowa</option>
+                  <option value="Kansas">Kansas</option>
+                  <option value="Kentucky">Kentucky</option>
+                  <option value="Louisiana">Louisiana</option>
+                  <option value="Maine">Maine</option>
+                  <option value="Maryland">Maryland</option>
+                  <option value="Massachusetts">Massachusetts</option>
+                  <option value="Michigan">Michigan</option>
+                  <option value="Minnesota">Minnesota</option>
+                  <option value="Mississippi">Mississippi</option>
+                  <option value="Missouri">Missouri</option>
+                  <option value="Montana">Montana</option>
+                  <option value="Nebraska">Nebraska</option>
+                  <option value="Nevada">Nevada</option>
+                  <option value="New Hampshire">New Hampshire</option>
+                  <option value="New Jersey">New Jersey</option>
+                  <option value="New Mexico">New Mexico</option>
+                  <option value="New York">New York</option>
+                  <option value="North Carolina">North Carolina</option>
+                  <option value="North Dakota">North Dakota</option>
+                  <option value="Ohio">Ohio</option>
+                  <option value="Oklahoma">Oklahoma</option>
+                  <option value="Oregon">Oregon</option>
+                  <option value="Pennsylvania">Pennsylvania</option>
+                  <option value="Rhode Island">Rhode Island</option>
+                  <option value="South Carolina">South Carolina</option>
+                  <option value="South Dakota">South Dakota</option>
+                  <option value="Tennessee">Tennessee</option>
+                  <option value="Texas">Texas</option>
+                  <option value="Utah">Utah</option>
+                  <option value="Vermont">Vermont</option>
+                  <option value="Virginia">Virginia</option>
+                  <option value="Washington">Washington</option>
+                  <option value="West Virginia">West Virginia</option>
+                  <option value="Wisconsin">Wisconsin</option>
+                  <option value="Wyoming">Wyoming</option>
+                  <option value="District of Columbia">
+                    District of Columbia
+                  </option>
+                </select>
               </div>
             </div>
 

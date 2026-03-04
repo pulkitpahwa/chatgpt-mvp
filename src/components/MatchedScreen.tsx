@@ -179,7 +179,7 @@ export function MatchedScreen({
                 </label>
                 <Input
                   value={formData.name}
-                  className="h-[48px] px-[16px] border-[1px] border-gray-100 focus:border-red-500 focus:border-[1px] focus:ring-0 focus:outline-none transition-colors text-[#000] placeholder-gray-400"
+                  className="h-[48px] px-[16px] border-[1px] border-gray-100 focus:border-gray-500 focus:border-[1px] focus:ring-0 focus:outline-none transition-colors text-[#000] placeholder-gray-400"
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
@@ -195,7 +195,7 @@ export function MatchedScreen({
                   Phone Number <span className="text-red-500">*</span>
                 </label>
                 <Input
-                  className="h-[48px] px-[16px] border-[1px] border-gray-100 focus:border-red-500 focus:border-[1px] focus:ring-0 focus:outline-none transition-colors text-[#000] placeholder-gray-400"
+                  className="h-[48px] px-[16px] border-[1px] border-gray-100 focus:border-gray-500 focus:border-[1px] focus:ring-0 focus:outline-none transition-colors text-[#000] placeholder-gray-400"
                   type="tel"
                   value={formData.phone}
                   onChange={(e) =>
@@ -215,7 +215,7 @@ export function MatchedScreen({
                   Email Address <span className="text-red-500">*</span>
                 </label>
                 <Input
-                  className="h-[48px] px-[16px] border-[1px] border-gray-100 focus:border-red-500 focus:border-[1px] focus:ring-0 focus:outline-none transition-colors text-[#000] placeholder-gray-400"
+                  className="h-[48px] px-[16px] border-[1px] border-gray-100 focus:border-gray-500 focus:border-[1px] focus:ring-0 focus:outline-none transition-colors text-[#000] placeholder-gray-400"
                   type="email"
                   value={formData.email}
                   onChange={(e) =>

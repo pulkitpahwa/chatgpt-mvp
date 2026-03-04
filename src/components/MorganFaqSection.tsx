@@ -10,16 +10,15 @@ export function MorganFaqSection({ onClose }: MorganFaqSectionProps) {
       <div className="bg-background-tertiary rounded-lg flex flex-col border border-[1px] border-[#0D0D0D0D] shadow-md">
         <details className="group border border-[1px] border-[#0D0D0D0D] ">
           <summary className="flex cursor-pointer list-none items-center justify-between p-4 text-[17px] leading-[24px] font-[400] text-[#0D0D0D]">
-            Why Morgan & Morgan?
+            Why L&F Brown?
             <span className="transition-transform group-open:rotate-180 rounded-full w-[34px] h-[34px] bg-[#F3F3F3] flex items-center justify-center text-[34px]">
               <ChevronDownLg className="w-[16px]" />{" "}
             </span>
           </summary>
 
           <div className="p-4 pt-0 text-gray-600 text-[14px] leading-[20px] text-[#0D0D0D]">
-            Morgan & Morgan is one of the largest and most trusted
-            plaintiff-side law firms in the nation, with a track record of
-            recovering over $25 billion for clients.{" "}
+            L&F Brown is a top personal injury firm dedicated to helping
+            clients navigate their cases with experienced legal representation.{" "}
           </div>
         </details>
         <details className="group border border-[1px] border-[#0D0D0D0D] ">
@@ -46,7 +45,7 @@ export function MorganFaqSection({ onClose }: MorganFaqSectionProps) {
 
           <div className="p-4 pt-0 text-gray-600 text-[14px] leading-[20px] text-[#0D0D0D]">
             No, sharing your details and receiving a consultation is completely
-            free. If your case is accepted, Morgan & Morgan works on a
+            free. If your case is accepted, L&F Brown works on a
             contingency fee basis, meaning you pay nothing unless they win your
             case.
           </div>

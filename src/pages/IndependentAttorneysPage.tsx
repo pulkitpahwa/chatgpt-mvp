@@ -29,7 +29,7 @@ const matchConfig: MatchConfig = {
   firmSubtitle: "A referral network of 6,000 independent attorneys",
   matchText:
     "An independent attorney with relevant experience has been matched to your case.",
-  costText: "Consultation fees vary by attorney",
+  costText: "$99 for 30 minute consult",
   turnAroundText: "You'll receive a call within 24 hours to discuss your case.",
   buttonText: "Connect with Overture",
   formTitle: "Connect with Overture",
@@ -107,7 +107,7 @@ export function IndependentAttorneysPage() {
       console.error("Tool call failed:", result.structuredContent);
       setToolCallError(
         result.structuredContent?.message ||
-          "An error occurred while processing your request."
+          "An error occurred while processing your request.",
       );
     }
   };

@@ -62,12 +62,12 @@ export function UnsupportedLocationPage() {
 
         <div className="space-y-3">
           <a
-            href="https://www.forthepeople.com"
+            href="https://www.inhouse.ai"
             target="_blank"
             rel="noopener noreferrer"
           >
             <Button color="primary" className="text-white rounded-lg" block>
-              Visit Morgan & Morgan
+              Visit Inhouse
             </Button>
           </a>
         </div>

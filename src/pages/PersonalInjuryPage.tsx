@@ -12,32 +12,30 @@ import {
   setWidgetState,
 } from "../hooks/useToolCall";
 import { useAppSelector } from "../store/hooks";
-import MorganLogo from "../../public/mandm.png";
+import LFBrownLogo from "../../public/lfbrown.png";
 
 const submitMessage = (email: string) =>
-  `Morgan & Morgan will email you at ${email} within 24 hours to discuss your case`;
+  `L&F Brown will email you at ${email} within 24 hours to discuss your case`;
 
 const matchConfig: MatchConfig = {
   logo: (
     <img
-      src={MorganLogo}
-      alt="Morgan & Morgan Logo"
+      src={LFBrownLogo}
+      alt="L&F Brown Logo"
       style={{ maxWidth: "50px", maxHeight: "31px" }}
     />
   ),
-  firmName: "Morgan & Morgan",
-  firmSubtitle:
-    "A national law firm of 1,000+ injury attorneys in all 50 states",
-  matchText:
-    "Morgan & Morgan has experience with personal injury cases like yours.",
+  firmName: "L&F Brown",
+  firmSubtitle: "A top personal injury firm",
+  matchText: "L&F Brown has experience with personal injury cases like yours.",
   costText: "Free consultation",
-  turnAroundText: "You'll receive a call within 24 hours to discuss your case.",
-  buttonText: "Connect with Morgan & Morgan",
-  formTitle: "Connect with Morgan & Morgan",
+  turnAroundText: "You’ll receive a call within 24 hours to discuss your case.",
+  buttonText: "Connect with L&F Brown",
+  formTitle: "Connect with L&F Brown",
   formSubtitle: "We’ll share your chat summary and contact",
   submitButtonText: "Send",
-  termsUrl: "https://www.forthepeople.com/terms-of-use/",
-  privacyUrl: "https://www.forthepeople.com/privacy-policy/",
+  termsUrl: "https://www.inhouse.ai/terms-of-service",
+  privacyUrl: "https://www.inhouse.ai/privacy-policy",
   formSubmitMessage: submitMessage,
 };
 
@@ -98,7 +96,7 @@ export function PersonalInjuryPage() {
       setWidgetState({
         consultationRequested: true,
         requestId,
-        partnerFirm: "morgan_morgan",
+        partnerFirm: "lf_brown",
       });
 
       // Switch to inline mode for success view

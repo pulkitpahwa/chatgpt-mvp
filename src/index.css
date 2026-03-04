@@ -4,9 +4,6 @@
 
 /* Custom theme extensions */
 @theme {
-  /* Morgan & Morgan brand colors */
-  --color-morgan-gold: #FDEB0E;
-  --color-morgan-blue: #1a365d;
 
   /* Custom animations */
   --animate-fade-in: fadeIn 0.5s ease-in-out;

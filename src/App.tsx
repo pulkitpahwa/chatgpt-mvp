@@ -16,7 +16,7 @@ import { IndependentAttorneysPage } from "./pages/IndependentAttorneysPage";
 // The widget receives authenticated user context through window.openai.toolOutput.
 
 // This app provides legal consultation matching for:
-// - Personal Injury (Morgan & Morgan)
+// - Personal Injury (L&F Brown)
 // - Business Consultation
 // - Other legal areas (not currently available)
 
