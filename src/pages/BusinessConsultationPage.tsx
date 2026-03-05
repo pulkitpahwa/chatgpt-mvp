@@ -30,9 +30,9 @@ const matchConfig: MatchConfig = {
     "Inhouse Counsel PC has experience with business legal matters like yours.",
   costText: "$99 for 30 minute consult",
   turnAroundText:
-    "You'll receive an email within 24 hours to pay and schedule your call.",
+    "You'll receive an email within two business days to pay and schedule your call.",
   buttonText: "Connect with Inhouse Counsel PC",
-  formTitle: "Connect with Inhouse Counsel",
+  formTitle: "Connect with Inhouse Counsel P.C.",
   formSubtitle: "We’ll share your chat summary and contact",
   submitButtonText: "Submit",
   termsUrl: "https://www.inhouse.ai/terms-of-service",

@@ -125,7 +125,7 @@ export function UnifiedMatchedScreen({
           <div className="flex flex-col">
             <button
               onClick={() => setShowForm(false)}
-              className="cursor-pointer p-4 rounded-full shadow-lg w-4 h-4 border border-[0.5px] border-[#0D0D0D1A] hover:bg-background-tertiary transition-colors flex items-center justify-center text-[#000]"
+              className="cursor-pointer p-4 rounded-full shadow-lg w-4 h-4 border border-[0.5px] border-[#0D0D0D1A] hover:bg-background-tertiary transition-colors flex items-center justify-center text-[#000] z-1000"
               aria-label="Go back"
             >
               <XIcon

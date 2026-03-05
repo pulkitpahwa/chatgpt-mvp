@@ -15,7 +15,7 @@ import { useAppSelector } from "../store/hooks";
 import Imhoff from "../../public/imhoff.png";
 
 const submitMessage = (email: string) =>
-  `Imhoff & Associates will email you at ${email} within 48 hours to discuss your case`;
+  `Imhoff & Associates will email you at ${email} within two business days to discuss your case`;
 
 const matchConfig: MatchConfig = {
   logo: (

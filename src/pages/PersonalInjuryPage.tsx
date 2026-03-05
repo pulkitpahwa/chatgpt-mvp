@@ -15,7 +15,7 @@ import { useAppSelector } from "../store/hooks";
 import LFBrownLogo from "../../public/lfbrown.png";
 
 const submitMessage = (email: string) =>
-  `L&F Brown will email you at ${email} within 24 hours to discuss your case`;
+  `L&F Brown will email you at ${email} within two business days to discuss your case`;
 
 const matchConfig: MatchConfig = {
   logo: (
@@ -30,7 +30,7 @@ const matchConfig: MatchConfig = {
   matchText: "L&F Brown has experience with personal injury cases like yours.",
   costText: "Free consultation",
   turnAroundText:
-    "You’ll receive a call within two business day to discuss your case.",
+    "You’ll receive a call within two business days to discuss your case.",
   buttonText: "Connect with L&F Brown",
   formTitle: "Connect with L&F Brown",
   formSubtitle: "We’ll share your chat summary and contact",

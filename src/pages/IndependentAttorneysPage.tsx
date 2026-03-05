@@ -16,7 +16,7 @@ import { useAppSelector } from "../store/hooks";
 import OvertureLogo from "../../public/overture.png";
 
 const submitMessage = (email: string) =>
-  `Overture will email you at ${email} within 24 hours to discuss your case`;
+  `Inhouse will email you at ${email} within two business days to discuss your case`;
 
 const matchConfig: MatchConfig = {
   logo: (
