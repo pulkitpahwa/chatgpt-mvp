@@ -4,6 +4,7 @@ import {
   UnifiedMatchedScreen,
   MatchConfig,
 } from "../components/UnifiedMatchedScreen";
+import { NotMatchedScreen } from "../components/NotMatchedScreen";
 import { SuccessScreen } from "../components/SuccessScreen";
 import { useAppContext } from "../context/AppContext";
 import {
@@ -42,7 +43,10 @@ const matchConfig: MatchConfig = {
 };
 
 export function IndependentAttorneysPage() {
-  const { isLoading, isWaitingForBackend } = useAppContext();
+  const { isLoading, isWaitingForBackend, toolOutput } = useAppContext();
+
+  console.log("Tool output in IndependentAttorneysPage:", toolOutput);
+  const matchFound = toolOutput?.structuredContent?.match_found;
   const [success, setSuccess] = useState(false);
   const [showMatchedScreen, setShowMatchedScreen] = useState(false);
   const [toolCallError, setToolCallError] = useState<string | null>(null);
@@ -119,6 +123,23 @@ export function IndependentAttorneysPage() {
 
   // Show matched screen with form
   if (showMatchedScreen) {
+    if (matchFound === false) {
+      return (
+        <div className="bg-white">
+          <NotMatchedScreen
+            onSubmit={async (data) => {
+              await handleSubmit({
+                ...data,
+                state: reduxMatchData.state || "",
+              });
+            }}
+            loading={loading}
+            error={toolCallError ? new Error(toolCallError) : null}
+          />
+        </div>
+      );
+    }
+
     return (
       <div className="bg-white">
         <UnifiedMatchedScreen

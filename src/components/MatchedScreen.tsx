@@ -50,6 +50,7 @@ interface MatchedScreenLabels {
   formTitle: string;
   formSubtitle: string;
   submitButtonText: string;
+  headerVariant?: "success" | "warning";
   termsUrl: string;
   privacyUrl: string;
 }
@@ -330,11 +331,29 @@ export function MatchedScreen({
   return (
     <div className="overflow-y-auto p-2">
       <div className="bg-background-secondary rounded-xl shadow-sm border border-[#E5E7EB] shadow-md">
-        {/* Header with green background */}
-        <div className="bg-[#E3EFE3] rounded-t-xl px-4 py-3">
+        {/* Header */}
+        <div
+          className={`rounded-t-xl px-4 py-3 ${
+            labels.headerVariant === "warning"
+              ? "bg-[#FEF3C7]"
+              : "bg-[#E3EFE3]"
+          }`}
+        >
           <div className="flex items-center gap-2">
-            <CheckCircleIcon className="text-[#166534] " />
-            <h2 className="text-[#166534] font-semibold text-lg">
+            <CheckCircleIcon
+              className={
+                labels.headerVariant === "warning"
+                  ? "text-[#92400E]"
+                  : "text-[#166534]"
+              }
+            />
+            <h2
+              className={`font-semibold text-lg ${
+                labels.headerVariant === "warning"
+                  ? "text-[#92400E]"
+                  : "text-[#166534]"
+              }`}
+            >
               {labels.title}
             </h2>
           </div>

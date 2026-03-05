@@ -28,14 +28,14 @@ export function Home() {
     dispatch(
       setMatchData({
         why_copy: String(
-          toolOutput?.structuredContent?.modal_why_copy ?? "..."
+          toolOutput?.structuredContent?.modal_why_copy ?? "...",
         ),
         gpt_context_id: String(
-          toolOutput?.structuredContent?.context_id ?? "..."
+          toolOutput?.structuredContent?.context_id ?? "...",
         ),
         message_copy: String(toolOutput?.structuredContent?.message ?? ""),
         nextsteps_copy: String(
-          toolOutput?.structuredContent?.modal_next_steps_copy ?? ""
+          toolOutput?.structuredContent?.modal_next_steps_copy ?? "",
         ),
         match_status:
           (toolOutput?.match_status as
@@ -45,7 +45,7 @@ export function Home() {
             | "error"
             | null) ?? "pending",
         state: String(toolOutput?.structuredContent?.state ?? ""),
-      })
+      }),
     );
 
     setMessage(message || null);
