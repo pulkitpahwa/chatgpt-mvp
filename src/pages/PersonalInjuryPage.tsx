@@ -29,7 +29,8 @@ const matchConfig: MatchConfig = {
   firmSubtitle: "A top personal injury firm",
   matchText: "L&F Brown has experience with personal injury cases like yours.",
   costText: "Free consultation",
-  turnAroundText: "You’ll receive a call within 24 hours to discuss your case.",
+  turnAroundText:
+    "You’ll receive a call within two business day to discuss your case.",
   buttonText: "Connect with L&F Brown",
   formTitle: "Connect with L&F Brown",
   formSubtitle: "We’ll share your chat summary and contact",
@@ -105,7 +106,7 @@ export function PersonalInjuryPage() {
       console.error("Tool call failed:", result.structuredContent);
       setToolCallError(
         result.structuredContent?.message ||
-          "An error occurred while processing your request."
+          "An error occurred while processing your request.",
       );
     }
   };

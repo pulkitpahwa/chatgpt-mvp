@@ -30,7 +30,8 @@ const matchConfig: MatchConfig = {
   matchText:
     "Our network includes attorneys with experience in criminal defense cases like yours.",
   costText: "Free consultation",
-  turnAroundText: "You'll receive a call within 24 hours to discuss your case.",
+  turnAroundText:
+    "You'll receive a call within two business days to discuss your case.",
   buttonText: "Connect with Imhoff & Associates",
   formTitle: "Connect with Imhoff & Associates",
   formSubtitle: "We’ll share your chat summary and contact",
@@ -106,7 +107,7 @@ export function CriminalDefensePage() {
       console.error("Tool call failed:", result.structuredContent);
       setToolCallError(
         result.structuredContent?.message ||
-          "An error occurred while processing your request."
+          "An error occurred while processing your request.",
       );
     }
   };

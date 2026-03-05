@@ -82,7 +82,7 @@ export function UnifiedMatchedScreen({
 
   // Use Redux state if available, otherwise fall back to config defaults
   const matchText = reduxMatchData.why_copy || config.matchText;
-  const costText = config.costText;
+  const costText = reduxMatchData.pricing ?? config.costText;
   const turnAroundText = config.turnAroundText;
 
   const validateForm = (): boolean => {
@@ -399,16 +399,20 @@ export function UnifiedMatchedScreen({
           <hr className="text-[#D1D1D1]" />
 
           {/* Cost */}
-          <div className="flex items-start gap-3">
-            <div className="flex-shrink-0 mt-0.5 text-[#027A48]">
-              <MoneyWavyIcon size={20} />
-            </div>
-            <p className="text-[14px] text-[#374151]">
-              <span className="font-semibold text-[#111827]">Cost: </span>
-              {costText}
-            </p>
-          </div>
-          <hr className="text-[#D1D1D1]" />
+          {costText && (
+            <>
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 mt-0.5 text-[#027A48]">
+                  <MoneyWavyIcon size={20} />
+                </div>
+                <p className="text-[14px] text-[#374151]">
+                  <span className="font-semibold text-[#111827]">Cost: </span>
+                  {costText}
+                </p>
+              </div>
+              <hr className="text-[#D1D1D1]" />
+            </>
+          )}
 
           {/* Turn around */}
           <div className="flex items-start gap-3">

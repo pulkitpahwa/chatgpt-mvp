@@ -14,7 +14,7 @@ import { useAppSelector } from "../store/hooks";
 import InhouseLogo from "../../public/inhouse-mini.png";
 
 const submitMessage = (email: string) =>
-  `Inhouse will email you at ${email} within 2-3 business days to discuss your case`;
+  `Inhouse will email you at ${email} within two business days to discuss your case`;
 
 const matchConfig: MatchConfig = {
   logo: (
@@ -96,7 +96,7 @@ export function BusinessConsultationPage() {
       console.error("Tool call failed:", result.structuredContent);
       setToolCallError(
         result.structuredContent?.message ||
-          "An error occurred while processing your request."
+          "An error occurred while processing your request.",
       );
     }
   };

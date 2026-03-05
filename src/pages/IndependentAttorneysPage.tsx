@@ -31,7 +31,8 @@ const matchConfig: MatchConfig = {
   matchText:
     "An independent attorney with relevant experience has been matched to your case.",
   costText: "$99 for 30 minute consult",
-  turnAroundText: "You'll receive a call within 24 hours to discuss your case.",
+  turnAroundText:
+    "You'll receive a call within two business days to discuss your case.",
   buttonText: "Connect with Overture",
   formTitle: "Connect with Overture",
   formSubtitle: "We’ll share your chat summary and contact",

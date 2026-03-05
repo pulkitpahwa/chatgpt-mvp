@@ -84,13 +84,6 @@ export function NotMatchedScreen({
         However, we can keep looking and contact if you match.
       </p>
 
-      {/* Dynamic message from backend */}
-      {reduxMatchData.message_copy && (
-        <p className="text-[14px] text-center text-[#6B7280] mb-6">
-          {reduxMatchData.message_copy}
-        </p>
-      )}
-
       {/* Form fields */}
       <div className="flex flex-col gap-4">
         <div>

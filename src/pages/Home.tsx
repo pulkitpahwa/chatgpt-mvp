@@ -45,6 +45,7 @@ export function Home() {
             | "error"
             | null) ?? "pending",
         state: String(toolOutput?.structuredContent?.state ?? ""),
+        pricing: (toolOutput?.structuredContent?.pricing as string) ?? null,
       }),
     );
 

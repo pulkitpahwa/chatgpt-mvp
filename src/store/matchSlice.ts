@@ -7,6 +7,7 @@ export interface MatchState {
   gpt_context_id: string;
   match_status: "pending" | "match_found" | "not_matched" | "error" | null;
   state: string;
+  pricing: string | null;
 }
 
 const initialState: MatchState = {
@@ -16,6 +17,7 @@ const initialState: MatchState = {
   gpt_context_id: "",
   match_status: null,
   state: "",
+  pricing: null,
 };
 
 const matchSlice = createSlice({
