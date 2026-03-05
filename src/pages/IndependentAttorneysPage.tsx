@@ -18,6 +18,9 @@ import OvertureLogo from "../../public/overture.png";
 const submitMessage = (email: string) =>
   `Inhouse will email you at ${email} within two business days to discuss your case`;
 
+const submitMessageNoMatch = (email: string) =>
+  `We don't have a laywer available. But, we'll reach out at ${email} if we find an attorney for your matter.`;
+
 const matchConfig: MatchConfig = {
   logo: (
     <img
@@ -52,6 +55,7 @@ export function IndependentAttorneysPage() {
   const [showMatchedScreen, setShowMatchedScreen] = useState(false);
   const [toolCallError, setToolCallError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState("");
+  const [successMessageNoMatch, setSuccessMessageNoMatch] = useState("");
 
   const { loading, callTool } = useRequestConsultation();
   const reduxMatchData = useAppSelector((state) => state.match);
@@ -87,6 +91,7 @@ export function IndependentAttorneysPage() {
       context_id: reduxMatchData?.gpt_context_id || undefined,
     };
     setSuccessMessage(submitMessage(formData.email));
+    setSuccessMessageNoMatch(submitMessageNoMatch(formData.email));
 
     const result = await callTool(args);
 
@@ -119,6 +124,9 @@ export function IndependentAttorneysPage() {
 
   // Success state
   if (success) {
+    if (matchFound === false) {
+      return <SuccessScreen description={successMessageNoMatch} />;
+    }
     return <SuccessScreen description={successMessage} />;
   }
 

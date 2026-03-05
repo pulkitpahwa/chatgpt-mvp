@@ -76,7 +76,7 @@ export function NotMatchedScreen({
         No Attorneys Available
       </h1>
 
-      <p className="text-[14px] text-center ">
+      <p className="text-[14px] text-center text-black">
         We couldn’t find any lawyers with relevant experience to this matter.
         However, we can keep looking and contact if you match.
       </p>
