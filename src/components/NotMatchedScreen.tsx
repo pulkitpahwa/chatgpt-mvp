@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Input } from "@openai/apps-sdk-ui/components/Input";
 import { Alert } from "@openai/apps-sdk-ui/components/Alert";
 import { ArrowRightIcon, CheckIcon } from "@phosphor-icons/react";
-import { useAppSelector } from "../store/hooks";
 
 export interface FormData {
   name: string;
@@ -28,8 +27,6 @@ export function NotMatchedScreen({
   loading = false,
   error = null,
 }: NotMatchedScreenProps) {
-  const reduxMatchData = useAppSelector((state) => state.match);
-
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
